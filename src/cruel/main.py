@@ -21,6 +21,7 @@ import sys
 import ccalogging
 
 from cruel import __appname__, __version__, errorExit, errorNotify, errorRaise
+from cruel.image import cardImage
 
 """Cruel Card Game main module."""
 

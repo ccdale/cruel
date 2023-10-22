@@ -16,6 +16,7 @@
 #     You should have received a copy of the GNU General Public License
 #     along with cruel.  If not, see <http://www.gnu.org/licenses/>.
 #
+import os
 from pathlib import Path
 import sys
 
@@ -32,6 +33,12 @@ log = ccalogging.log
 # so this file must be loaded from main.py, not used standalone
 
 imagepath = Path(__file__).parent.parent / "images"
+cachepath = Path(
+    os.path.expanduser() / ".cache" / __appname__ / f"{cardwidth}x{cardheight}"
+)
+if not cachepath.exists():
+    cachepath.mkdir(parents=True)
+    log.info(f"Created cache directory {cachepath}")
 
 
 def getCardFile(cardnumber):
@@ -46,7 +53,7 @@ def getCardFile(cardnumber):
 
 def getWantedSize(cardnumber):
     try:
-        return imagepath / f"{cardnumber}_{cardwidth}x{cardheight}.png"
+        return cachepath / f"{cardnumber}_{cardwidth}x{cardheight}.png"
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
 
@@ -58,8 +65,7 @@ def cardImage(cardnumber):
             cardfile = getCardFile(cardnumber)
             with Image.open(cardfile) as cardimage:
                 out = cardimage.resize(cardsize)
-                outfile = imagepath / f"{cardnumber}_{cardwidth}x{cardheight}.png"
-                out.save(outfile)
+                out.save(wanted)
         else:
             out = Image.open(wanted)
         return out

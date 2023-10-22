@@ -2,14 +2,19 @@
 name = "cruel"
 version = "0.1.0"
 description = ""
-authors = ["ccdale <chris.allison@hivehome.com>"]
+authors = ["ccdale <chris.charles.allison+cruel@gmail.com>"]
 readme = "README.md"
 packages = [{include = "cruel", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 ccalogging = "^0.4.4"
+pysimplegui = "^4.60.5"
+pillow = "^10.1.0"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
 
 [build-system]
 requires = ["poetry-core"]
