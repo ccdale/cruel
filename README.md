@@ -3,12 +3,12 @@
 A python implementation of the card game Cruel that I originally saw with
 Windows for Workgroups 3.11.
 
-# Card Images
+## Card Images
 
 The card images are in the `images` directory. See the [LICENCE](images/LICENCE)
 file for usage information.
 
-# Card Caching
+## Card Caching
 
 The card images are resized currently resized to 140 pixels high by 100 pixels
 wide. The size is set in a global variable `cardsize` in
@@ -22,3 +22,8 @@ As each card is used it will be resized by the
 
 The intention is to have some form of dynamic sizing dependent on window size in
 the future.
+
+## Card Numbering
+
+The image files are numbered from 1-52. The cards are in Ace - King order, with
+the suits in Spades, Hearts, Diamonds and Clubs ordering.
