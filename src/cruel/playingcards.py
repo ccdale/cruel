@@ -18,6 +18,10 @@
 #
 import sys
 
+import ccalogging
+
 from cruel import errorExit, errorNotify, errorRaise, __appname__, __version__
 
 """Playing cards module for the game Cruel."""
+
+log = ccalogging.log
