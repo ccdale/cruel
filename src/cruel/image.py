@@ -28,7 +28,7 @@ from cruel import __appname__, __version__, errorExit, errorNotify, errorRaise
 
 log = ccalogging.log
 
-# cardsize is a global variable in main.py
+# card{size, width, height} are global variables in main.py
 # so this file must be loaded from main.py, not used standalone
 
 imagepath = Path(__file__).parent.parent / "images"
