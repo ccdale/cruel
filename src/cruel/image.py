@@ -29,14 +29,12 @@ from cruel import __appname__, __version__, errorExit, errorNotify, errorRaise
 
 log = ccalogging.log
 
-# card{size, width, height} are global variables in main.py
-# so this file must be loaded from main.py, not used standalone
-
-imagepath = Path(__file__).parent.parent / "images"
-cachepath = Path(
-    os.path.expanduser() / ".cache" / __appname__ / f"{cardwidth}x{cardheight}"
-)
+imagepath = Path(__file__).parent.parent.parent / "images"
+log.debug(f"imagepath = {imagepath}")
+cachepath = Path(os.path.expanduser("~/.cache")) / __appname__
+log.debug(f"cachepath = {cachepath}")
 if not cachepath.exists():
+    log.debug(f"Creating cache directory {cachepath}")
     cachepath.mkdir(parents=True)
     log.info(f"Created cache directory {cachepath}")
 
@@ -51,16 +49,20 @@ def getCardFile(cardnumber):
         errorNotify(sys.exc_info()[2], e)
 
 
-def getWantedSize(cardnumber):
+def getWantedSize(cardnumber, cardsize=(100, 140)):
     try:
-        return cachepath / f"{cardnumber}_{cardwidth}x{cardheight}.png"
+        cardwidth, cardheight = cardsize
+        sizepath = cachepath / f"{cardwidth}x{cardheight}"
+        if not sizepath.exists():
+            sizepath.mkdir(parents=True)
+        return sizepath / f"{cardnumber}_{cardwidth}x{cardheight}.png"
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
 
 
-def cardImage(cardnumber):
+def cardImage(cardnumber, cardsize=(100, 140)):
     try:
-        wanted = getWantedSize(cardnumber)
+        wanted = getWantedSize(cardnumber, cardsize)
         if not wanted.exists():
             cardfile = getCardFile(cardnumber)
             with Image.open(cardfile) as cardimage:

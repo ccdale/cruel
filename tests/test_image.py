@@ -16,17 +16,26 @@
 #     You should have received a copy of the GNU General Public License
 #     along with cruel.  If not, see <http://www.gnu.org/licenses/>.
 #
-import sys
+import os
+from pathlib import Path
 
-import ccalogging
+from PIL import Image
 
-from cruel import __appname__, __version__, errorExit, errorNotify, errorRaise, image
-from cruel import playingcards as pc
+from cruel import __appname__, image
 
-# from cruel.image import cardImage
 
-"""Cruel Card Game main module."""
+def test_getCardFile():
+    expected = Path(image.imagepath / "1.png")
+    assert image.getCardFile(1) == expected
 
-ccalogging.setDebug()
-# ccalogging.setInfo()
-log = ccalogging.log
+
+def test_getWantedSize():
+    expected = Path(image.cachepath / "100x140" / "1_100x140.png")
+    assert image.getWantedSize(1) == expected
+
+
+def test_cardImage():
+    wanted = image.getWantedSize(1)
+    im = image.cardImage(1)
+    assert isinstance(im, type(Image.open(wanted)))
+    assert im.size == (100, 140)
