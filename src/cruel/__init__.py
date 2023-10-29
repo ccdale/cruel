@@ -20,7 +20,7 @@ import sys
 
 import ccalogging
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 __appname__ = "cruel"
 
 log = ccalogging.log
