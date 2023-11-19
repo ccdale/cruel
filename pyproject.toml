@@ -18,6 +18,8 @@ pytest = "^7.4.2"
 
 [tool.poetry.scripts]
 cardtest = "cruel.main:cardLayoutTest"
+layouttest = "cruel.main:layoutTest"
+ltest = "cruel.main:ltest"
 
 [build-system]
 requires = ["poetry-core"]

@@ -28,36 +28,78 @@ from cruel import playingcards as pc
 
 """Cruel Card Game main module."""
 
+ccalogging.setConsoleOut()
 ccalogging.setDebug()
 # ccalogging.setInfo()
 log = ccalogging.log
 
 
-def cardLayoutTest():
+def customCol(elem, bordercolour="green", pad=(10, 10)):
+    # use a pysimplegui column to hold the cards
+    # then we can draw a border around the card
     try:
-        # width of card: 100
-        # height of card: 140
-        # allowing for 8 pixels between cards
-        # that is a padding of 4 pixels on each side
-        # card area is 108 wide by 148 high
-        # 6 cards across and 3 down
-        # window size is 648 wide by 444 high
-        log.info("Starting cardLayoutTest")
-        layout = []
-        for row in range(3):
-            rowLayout = []
-            for col in range(6):
-                cn = row * 13 + col
-                card = pc.Card(cn)
-                rowLayout.append(sg.Image(data=card.getImage()))
-            layout.append(rowLayout)
+        return sg.Column([[elem]], background_color=bordercolour, pad=pad)
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
+
+
+def ltest():
+    try:
+        log.info("Starting ltest")
+        basecolours = ["red", "green", "blue", "yellow"]
+        colours = basecolours.copy()
+        [colours.extend(basecolours) for i in range(4)]
+        # cards = [pc.Card(i) for i in range(0, 19)]
+        # frames = [
+        #     customCol(sg.Image(filename=cards[i].getImage()), bordercolour=colours[i])
+        #     for i in range(1, 19)
+        # ]
+        frames = []
+        for i in range(1, 19):
+            # log.debug(f"{i=}, {cards[i]=}, {colours[i]=}")
+            if i == 1 or i == 16:
+                elem = sg.Text(
+                    f"{i=}", background_color="green", expand_x=True, expand_y=True
+                )
+            else:
+                card = pc.Card(i)
+                elem = sg.Image(filename=card.getImage(), background_color="green")
+            frames.append(customCol(elem, bordercolour=colours[i]))
+        cols = []
+        for i in range(0, 16, 3):
+            col = sg.Column(
+                [[frames[i]], [frames[i + 1]], [frames[i + 2]]],
+                background_color="green",
+            )
+            cols.append(col)
+        layout = [cols]
         window = sg.Window(
-            __appname__ + " " + __version__, layout, finalize=True, size=(648, 444)
+            f"{__appname__} {__version__}",
+            layout,
+            finalize=True,
+            background_color="green",
         )
         while True:
             event, values = window.read()
             if event == sg.WIN_CLOSED:
                 break
-        log.info("Ending cardLayoutTest")
+        log.info("Ending ltest")
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
+
+def test2():
+    try:
+        toprow = [sg.Frame(i"top row {i}", layout=[[]]) for i in range(5)]
+        layout = [toprow]
+        window = sg.Window(
+            f"{__appname__} {__version__}",
+            layout,
+            finalize=True,
+            background_color="green",
+        )
+        while True:
+            event, values = window.read()
+            if event == sg.WIN_CLOSED:
+                break
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)

@@ -37,5 +37,6 @@ def test_getWantedSize():
 def test_cardImage():
     wanted = image.getWantedSize(1)
     im = image.cardImage(1)
-    assert isinstance(im, type(Image.open(wanted)))
-    assert im.size == (100, 140)
+    assert wanted == im
+    # assert isinstance(im, type(Image.open(wanted)))
+    # assert im.size == (100, 140)

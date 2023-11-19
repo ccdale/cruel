@@ -68,8 +68,10 @@ def cardImage(cardnumber, cardsize=(100, 140)):
             with Image.open(cardfile) as cardimage:
                 out = cardimage.resize(cardsize)
                 out.save(wanted)
-        else:
-            out = Image.open(wanted)
-        return out
+        # else:
+        #     out = Image.open(wanted)
+        # return out
+        log.debug(f"cardImage: {cardnumber=} Returning {wanted=}")
+        return wanted
     except Exception as e:
         errorExit(sys.exc_info()[2], e)

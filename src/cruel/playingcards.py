@@ -64,14 +64,13 @@ class CardName:
 class Card:
     def __init__(self, cardnumber, facedown=False, cardsize=(100, 140)):
         try:
+            # log.debug(f"creating card {cardnumber=}, {facedown=}, {cardsize=}")
             self.cardname = CardName(cardnumber)
             self.facedown = facedown
             self.cardsize = cardsize
             self.value, self.suit, self.cardnumber = self.cardname.valtuple()
-            # lazy load the card image
-            self.image = None
-            # lazy load the back image
-            self.backimage = None
+            self.image = image.cardImage(self.cardnumber)
+            self.backimage = image.cardImage(0)
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
 
@@ -98,14 +97,7 @@ class Card:
 
     def getImage(self):
         try:
-            if self.facedown:
-                if self.backimage is None:
-                    self.backimage = image.cardImage(0)
-                return self.backimage
-            else:
-                if self.image is None:
-                    self.image = image.cardImage(self.cardnumber)
-                return self.image
+            return self.backimage if self.facedown else self.image
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
 
