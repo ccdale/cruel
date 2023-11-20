@@ -29,10 +29,27 @@ log = ccalogging.log
 
 
 class CardName:
+    valueNames = [
+        "Ace",
+        "Two",
+        "Three",
+        "Four",
+        "Five",
+        "Six",
+        "Seven",
+        "Eight",
+        "Nine",
+        "Ten",
+        "Jack",
+        "Queen",
+        "King",
+    ]
+
     def __init__(self, cardnumber):
         try:
             self.cardnumber = cardnumber
             self.value = self.cardnumber % 13
+            self.valuename = self.valueNames[self.value]
             self.suitindex = self.cardnumber // 13
             self.suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
             self.suit = self.suits[self.suitindex]
@@ -48,7 +65,7 @@ class CardName:
 
     def __str__(self):
         try:
-            cname = "Face Down" if self.hidename else f"{self.value} of {self.suit}"
+            cname = "Face Down" if self.hidename else f"{self.valuename} of {self.suit}"
             return cname
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
@@ -193,7 +210,7 @@ class Deck(Stack):
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
 
-    def dealStack(number=1):
+    def dealStack(self, number=1):
         try:
             stack = Stack()
             stack.cards = self.deal(number)

@@ -24,6 +24,7 @@ from cruel import (
     __appname__,
     __version__,
     errorExit,
+    errorRaise,
     cardgui as cg,
     playingcards as pc,
 )
@@ -33,15 +34,37 @@ from cruel import (
 log = ccalogging.log
 
 
+def acesStacks():
+    try:
+        foundations = []
+        aces = [pc.Card(i) for i in range(1, 53, 13)]
+        for i in range(4):
+            stack = pc.Stack()
+            stack.append(aces[i])
+            foundations.append(stack)
+        return foundations
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)
+
+
+def cardsStacks(deck=None):
+    try:
+        if deck is None:
+            deck = pc.Deck(pullaces=True, facedown=False)
+            deck.shuffle()
+        cardpiles = [deck.dealStack(4) for i in range(12)]
+        return cardpiles
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)
+
+
 def newGame():
     """Start a new game."""
     try:
         log.info(f"Starting new game of {__appname__} {__version__}")
-        # define the deck, the layout piles and the foundation piles
-        deck = pc.Deck(pullaces=True, facedown=False)
-        deck.shuffle()
-        cardpiles = [deck.deal(number=4) for i in range(12)]
-        foundations = [[pc.Card(i)] for i in range(1, 53, 13)]
+        # define the card piles and the foundation (aces) piles
+        cardpiles = cardsStacks()
+        foundations = acesStacks()
         cg.gameWindow(cardpiles, foundations)
         log.info(f"{__appname__} completed, Exiting.")
     except Exception as e:
