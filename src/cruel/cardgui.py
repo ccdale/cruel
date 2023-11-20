@@ -37,9 +37,10 @@ def cardElement(card, bordercolour=None, pad=(10, 10), key=None):
         errorNotify(sys.exc_info()[2], e)
 
 
-def gameWindow(cardpiles, foundations):
+def gameWindow():
     """Create the game window. Run the game."""
     try:
-        pass
+        cardpiles = pc.cardStacks()
+        foundations = pc.acesStacks()
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
