@@ -217,3 +217,27 @@ class Deck(Stack):
             return stack
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
+
+
+def acesStacks():
+    try:
+        foundations = []
+        aces = [Card(i) for i in range(0, 52, 13)]
+        for i in range(4):
+            stack = Stack()
+            stack.append(aces[i])
+            foundations.append(stack)
+        return foundations
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)
+
+
+def cardStacks(deck=None):
+    try:
+        if deck is None:
+            deck = Deck(pullaces=True, facedown=False)
+            deck.shuffle()
+        cardpiles = [deck.dealStack(4) for i in range(12)]
+        return cardpiles
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)
