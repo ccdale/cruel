@@ -24,9 +24,7 @@ from cruel import (
     __appname__,
     __version__,
     errorExit,
-    errorRaise,
     cardgui as cg,
-    playingcards as pc,
 )
 
 """Cruel Card Game main module."""
