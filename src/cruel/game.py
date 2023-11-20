@@ -47,7 +47,7 @@ def acesStacks():
         errorRaise(sys.exc_info()[2], e)
 
 
-def cardsStacks(deck=None):
+def cardStacks(deck=None):
     try:
         if deck is None:
             deck = pc.Deck(pullaces=True, facedown=False)
@@ -63,7 +63,7 @@ def newGame():
     try:
         log.info(f"Starting new game of {__appname__} {__version__}")
         # define the card piles and the foundation (aces) piles
-        cardpiles = cardsStacks()
+        cardpiles = cardStacks()
         foundations = acesStacks()
         cg.gameWindow(cardpiles, foundations)
         log.info(f"{__appname__} completed, Exiting.")
