@@ -119,6 +119,31 @@ def test_Stack_showBottomCard():
     assert c.facedown == False
 
 
+def test_Stack_show_1st():
+    s = pc.Stack()
+    s.append(pc.CardName(2))
+    assert len(s) == 1
+    assert s.show().cardnumber == 2
+    assert len(s) == 1
+
+
+def test_Stack_show():
+    d = pc.Deck()
+    c = d.show()
+    assert len(d) == 52
+    assert c.cardnumber == 51
+    assert str(c) == "King of Clubs"
+    assert repr(c) == "Card(51)"
+    assert c.facedown == False
+
+
+def test_Stack_show_empty():
+    s = pc.Stack()
+    assert len(s) == 0
+    assert s.show() is None
+    assert len(s) == 0
+
+
 def test_Stack_appendStack():
     s = pc.Stack()
     s.append(pc.CardName(2))
