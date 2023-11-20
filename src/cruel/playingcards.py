@@ -180,6 +180,12 @@ class Stack:
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
 
+    def show(self):
+        try:
+            return self.showBottomCard()
+        except Exception as e:
+            errorNotify(sys.exc_info()[2], e)
+
     def appendStack(self, stack):
         try:
             self.cards.extend(stack.cards)
@@ -215,6 +221,16 @@ class Deck(Stack):
             stack = Stack()
             stack.cards = self.deal(number)
             return stack
+        except Exception as e:
+            errorNotify(sys.exc_info()[2], e)
+
+
+class Pile:
+    def __init__(self, stack, row, col):
+        try:
+            self.row = row
+            self.col = col
+            self.stack = stack
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
 
