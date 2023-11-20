@@ -21,8 +21,16 @@ import sys
 import ccalogging
 import PySimpleGUI as sg
 
-from cruel import __appname__, __version__, errorExit, errorNotify, errorRaise, image
-from cruel import playingcards as pc
+from cruel import (
+    __appname__,
+    __version__,
+    bgcolour,
+    errorExit,
+    errorNotify,
+    errorRaise,
+    image,
+)
+from cruel import cardgui as cg, playingcards as pc
 
 # from cruel.image import cardImage
 
@@ -63,7 +71,8 @@ def ltest():
                 )
             else:
                 card = pc.Card(i)
-                elem = sg.Image(filename=card.getImage(), background_color="green")
+                # elem = sg.Image(filename=card.getImage(), background_color="green")
+                elem = cg.cardElement(card, bordercolour=bgcolour)
             frames.append(customCol(elem, bordercolour=colours[i]))
         cols = []
         for i in range(0, 16, 3):
@@ -87,9 +96,13 @@ def ltest():
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
 
+
 def test2():
     try:
-        toprow = [sg.Frame(i"top row {i}", layout=[[]]) for i in range(5)]
+        toprow = [
+            sg.Frame(f"top row {i}", layout=[[]], bordercolour="green")
+            for i in range(5)
+        ]
         layout = [toprow]
         window = sg.Window(
             f"{__appname__} {__version__}",

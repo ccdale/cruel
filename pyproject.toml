@@ -17,8 +17,7 @@ pillow = "^10.1.0"
 pytest = "^7.4.2"
 
 [tool.poetry.scripts]
-cardtest = "cruel.main:cardLayoutTest"
-layouttest = "cruel.main:layoutTest"
+test2 = "cruel.main:test2"
 ltest = "cruel.main:ltest"
 
 [build-system]

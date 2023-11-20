@@ -19,29 +19,19 @@
 import sys
 
 import ccalogging
+import PySimpleGUI as sg
 
-__version__ = "0.1.1"
-__appname__ = "cruel"
+# from cruel import errorExit, errorNotify, errorRaise, __appname__, __version__
+from cruel import errorNotify, bgcolour, playingcards as pc
+
+"""card gui module for the game Cruel."""
 
 log = ccalogging.log
 
-bgcolour = "#035E1A"
 
-
-def errorNotify(exci, e, fname=None):
-    lineno = exci.tb_lineno
-    if fname is None:
-        fname = exci.tb_frame.f_code.co_name
-    ename = type(e).__name__
-    msg = f"{ename} Exception at line {lineno} in function {fname}: {e}"
-    log.error(msg)
-
-
-def errorRaise(exci, e, fname=None):
-    errorNotify(exci, e, fname)
-    raise
-
-
-def errorExit(exci, e, fname=None):
-    errorNotify(exci, e, fname)
-    sys.exit(1)
+def cardElement(card, bordercolour=None, pad=(10, 10), key=None):
+    try:
+        elem = sg.Image(filename=card.getImage(), background_color=bgcolour)
+        return sg.Column([[elem]], background_color=bordercolour, pad=pad)
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
