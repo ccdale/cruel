@@ -35,3 +35,11 @@ def cardElement(card, bordercolour=None, pad=(10, 10), key=None):
         return sg.Column([[elem]], background_color=bordercolour, pad=pad)
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
+
+
+def gameWindow(cardpiles, foundations):
+    """Create the game window. Run the game."""
+    try:
+        pass
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)

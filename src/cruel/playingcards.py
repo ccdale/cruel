@@ -192,3 +192,11 @@ class Deck(Stack):
             return [self.topCard() for i in range(number)]
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
+
+    def dealStack(number=1):
+        try:
+            stack = Stack()
+            stack.cards = self.deal(number)
+            return stack
+        except Exception as e:
+            errorNotify(sys.exc_info()[2], e)
