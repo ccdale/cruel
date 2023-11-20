@@ -71,7 +71,7 @@ def cardImage(cardnumber, cardsize=(100, 140)):
         # else:
         #     out = Image.open(wanted)
         # return out
-        log.debug(f"cardImage: {cardnumber=} Returning {wanted=}")
+        # log.debug(f"cardImage: {cardnumber=} Returning {wanted=}")
         return wanted
     except Exception as e:
         errorExit(sys.exc_info()[2], e)

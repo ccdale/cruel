@@ -16,6 +16,7 @@
 #     You should have received a copy of the GNU General Public License
 #     along with cruel.  If not, see <http://www.gnu.org/licenses/>.
 #
+from random import shuffle
 import sys
 
 import ccalogging
@@ -36,9 +37,6 @@ from cruel import cardgui as cg, playingcards as pc
 
 """Cruel Card Game main module."""
 
-ccalogging.setConsoleOut()
-ccalogging.setDebug()
-# ccalogging.setInfo()
 log = ccalogging.log
 
 
@@ -47,6 +45,37 @@ def customCol(elem, bordercolour="green", pad=(10, 10)):
     # then we can draw a border around the card
     try:
         return sg.Column([[elem]], background_color=bordercolour, pad=pad)
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
+
+
+def rowByRow():
+    try:
+        log.info("Starting rowByRow")
+        aces = [pc.Card(i) for i in range(1, 53, 13)]
+        shuffle(aces)
+        aelems = [cg.cardElement(ace, bordercolour=bgcolour) for ace in aces]
+        r2elems = [
+            cg.cardElement(pc.Card(i), bordercolour=bgcolour) for i in range(2, 8)
+        ]
+        r3elems = [
+            cg.cardElement(pc.Card(i), bordercolour=bgcolour) for i in range(15, 21)
+        ]
+        row1 = [aelems]
+        row2 = [r2elems]
+        row3 = [r3elems]
+        layout = [row1, row2, row3]
+        window = sg.Window(
+            f"{__appname__} {__version__}",
+            layout,
+            finalize=True,
+            background_color="green",
+        )
+        while True:
+            event, values = window.read()
+            if event == sg.WIN_CLOSED:
+                break
+        log.info("ending rowByRow")
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
 

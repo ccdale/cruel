@@ -19,6 +19,7 @@ pytest = "^7.4.2"
 [tool.poetry.scripts]
 test2 = "cruel.main:test2"
 ltest = "cruel.main:ltest"
+rbr = "cruel.main:rowByRow"
 
 [build-system]
 requires = ["poetry-core"]

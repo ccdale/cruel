@@ -20,31 +20,29 @@ import sys
 
 import ccalogging
 
-__version__ = "0.1.1"
-__appname__ = "cruel"
+from cruel import (
+    __appname__,
+    __version__,
+    errorExit,
+    cardgui as cg,
+    playingcards as pc,
+)
 
-ccalogging.setConsoleOut()
-ccalogging.setDebug()
-# ccalogging.setInfo()
+"""Cruel Card Game main module."""
+
 log = ccalogging.log
 
-bgcolour = "#035E1A"
 
-
-def errorNotify(exci, e, fname=None):
-    lineno = exci.tb_lineno
-    if fname is None:
-        fname = exci.tb_frame.f_code.co_name
-    ename = type(e).__name__
-    msg = f"{ename} Exception at line {lineno} in function {fname}: {e}"
-    log.error(msg)
-
-
-def errorRaise(exci, e, fname=None):
-    errorNotify(exci, e, fname)
-    raise
-
-
-def errorExit(exci, e, fname=None):
-    errorNotify(exci, e, fname)
-    sys.exit(1)
+def newGame():
+    """Start a new game."""
+    try:
+        log.info(f"Starting new game of {__appname__} {__version__}")
+        # define the deck, the layout piles and the foundation piles
+        deck = pc.Deck(pullaces=True, facedown=False)
+        deck.shuffle()
+        cardpiles = [deck.deal(number=4) for i in range(12)]
+        foundations = [[pc.Card(i)] for i in range(1, 53, 13)]
+        cg.gameWindow(cardpiles, foundations)
+        log.info(f"{__appname__} completed, Exiting.")
+    except Exception as e:
+        errorExit(sys.exc_info()[2], e)
