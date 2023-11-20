@@ -27,7 +27,7 @@ def test_CardName():
     assert cn.suit == "Spades"
     assert cn.valtuple() == (2, "Spades", 2)
     assert repr(cn) == "CardName(2)"
-    assert str(cn) == "2 of Spades"
+    assert str(cn) == "Three of Spades"
 
 
 def test_CardName_High_card():
@@ -38,7 +38,7 @@ def test_CardName_High_card():
     assert cn.suit == "Clubs"
     assert cn.valtuple() == (12, "Clubs", 51)
     assert repr(cn) == "CardName(51)"
-    assert str(cn) == "12 of Clubs"
+    assert str(cn) == "King of Clubs"
 
 
 def test_Stack_length():
@@ -114,7 +114,7 @@ def test_Stack_showBottomCard():
     c = d.showBottomCard()
     assert len(d) == 52
     assert c.cardnumber == 51
-    assert str(c) == "12 of Clubs"
+    assert str(c) == "King of Clubs"
     assert repr(c) == "Card(51)"
     assert c.facedown == False
 

@@ -37,7 +37,7 @@ log = ccalogging.log
 def acesStacks():
     try:
         foundations = []
-        aces = [pc.Card(i) for i in range(1, 53, 13)]
+        aces = [pc.Card(i) for i in range(0, 52, 13)]
         for i in range(4):
             stack = pc.Stack()
             stack.append(aces[i])

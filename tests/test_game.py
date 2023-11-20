@@ -5,6 +5,7 @@ def test_acesStacks():
     aces = game.acesStacks()
     assert len(aces) == 4
     assert all([isinstance(stack, pc.Stack) for stack in aces])
+    assert str(aces[0].showBottomCard()) == "Ace of Spades"
     assert aces[0].showBottomCard().value == 1
     assert aces[0].showBottomCard().cardnumber == 1
     assert aces[0].showBottomCard().suit == "Spades"
@@ -27,6 +28,6 @@ def test_cardStacks():
     assert len(stacks[0]) == 4
     assert len(stacks[11]) == 4
     assert all([isinstance(stack, pc.Stack) for stack in stacks])
-    assert str(stacks[0].cards[0]) == "Ace of Diamonds"
-    assert stacks[0].cards[0].value not in [1, 14, 27, 40]
-    assert stacks[8].showBottomCard().cardnumber not in [1, 14, 27, 40]
+    assert str(stacks[0].cards[0]) == "Two of Spades"
+    assert stacks[0].cards[0].value not in [0, 13, 26, 39]
+    assert stacks[8].showBottomCard().cardnumber not in [0, 13, 26, 39]
