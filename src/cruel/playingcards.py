@@ -122,7 +122,7 @@ class Card:
 class Stack:
     def __init__(self, cards=None):
         try:
-            self.cards = cards if isinstance(cards, Stack) else []
+            self.cards = cards if isinstance(cards, list) else []
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
 
@@ -176,7 +176,10 @@ class Stack:
 
     def showBottomCard(self):
         try:
-            return self.cards[-1]
+            if len(self.cards) > 0:
+                return self.cards[-1]
+            else:
+                return None
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)
 

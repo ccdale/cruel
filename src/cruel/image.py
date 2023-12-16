@@ -75,3 +75,22 @@ def cardImage(cardnumber, cardsize=(100, 140)):
         return wanted
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
+
+
+def blankImage(cardsize=(100, 140)):
+    try:
+        cardwidth, cardheight = cardsize
+        sizepath = cachepath / f"{cardwidth}x{cardheight}"
+        if not sizepath.exists():
+            sizepath.mkdir(parents=True)
+        blankpath = sizepath / f"blank_{cardwidth}x{cardheight}.png"
+        blankfile = imagepath / "blank.png"
+        if not blankfile.exists():
+            raise Exception(f"Blank image file {blankfile} does not exist")
+        if not blankpath.exists():
+            with Image.open(blankfile) as blankimage:
+                out = blankimage.resize(cardsize)
+                out.save(blankpath)
+        return blankpath
+    except Exception as e:
+        errorExit(sys.exc_info()[2], e)
