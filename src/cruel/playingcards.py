@@ -176,12 +176,14 @@ class Stack:
 
     def showBottomCard(self):
         try:
+            log.debug(f"{self.cards=}")
             if len(self.cards) > 0:
                 return self.cards[-1]
             else:
                 return None
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            # errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def show(self):
         try:

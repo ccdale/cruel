@@ -116,7 +116,7 @@ def setup():
         ]
         deck = pc.Deck(pullaces=True, facedown=False)
         deck.shuffle()
-        cardpiles = [CruelPile(i, cardslist=deck.dealStack(4)) for i in range(12)]
+        cardpiles = [CruelPile(i, cardslist=deck.deal(4)) for i in range(12)]
         return (deck, acepiles, cardpiles)
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
