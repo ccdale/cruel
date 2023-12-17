@@ -21,7 +21,16 @@ import sys
 import ccalogging
 import PySimpleGUI as sg
 
-from cruel import bgcolour, errorExit, errorNotify, image, log, playingcards as pc
+from cruel import (
+    __appname__,
+    __version__,
+    bgcolour,
+    errorExit,
+    errorNotify,
+    image,
+    log,
+    playingcards as pc,
+)
 
 """Game module for the game cruel."""
 
@@ -125,9 +134,32 @@ def setup():
 def gameWindow():
     """Create the game window. Run the game."""
     try:
-        foundationelements = [
-            cg.cardElement(f.showBottomCard()) for f in pc.acesStacks()
+        deck, acepiles, cardpiles = setup()
+        cardpileelements = [
+            cg.cardElement(c.showBottomCard(), key=f"L{cn}")
+            for cn, c in enumerate(cardpiles)
         ]
-        cardpileelements = [cg.cardElement(c.showBottomCard()) for c in pc.cardStacks()]
+        foundationelements = [
+            cg.cardElement(a.showBottomCard(), key=f"A{cn + acn}")
+            for acn, a in enumerate(acepiles)
+        ]
+        blank = sg.Image(image.blankImage(), background_color=bgcolour)
+        blankr = blank.copy()
+        rows = []
+        rows.append([blank, foundationelements, blankr])
+        rows.append([cardpileelements[:6]])
+        rows.append([cardpileelements[6:]])
+        layout = [rows[0], rows[1], rows[2]]
+        window = sg.Window(
+            f"{__appname__} {__version__}",
+            layout,
+            finalize=True,
+            background_color="green",
+        )
+        while True:
+            event, values = window.read()
+            log.debug(f"{event=}")
+            if event == sg.WIN_CLOSED:
+                break
     except Exception as e:
         errorExit(sys.exc_info()[2], e)

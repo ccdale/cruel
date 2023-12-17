@@ -20,6 +20,7 @@ pytest = "^7.4.2"
 test2 = "cruel.main:test2"
 ltest = "cruel.main:ltest"
 rbr = "cruel.main:rowByRow"
+cruel = "cruel.cruel:gameWindow"
 
 [build-system]
 requires = ["poetry-core"]
