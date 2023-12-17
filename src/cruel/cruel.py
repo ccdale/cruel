@@ -136,11 +136,11 @@ def gameWindow():
     try:
         deck, acepiles, cardpiles = setup()
         cardpileelements = [
-            cg.cardElement(c.showBottomCard(), key=f"L{cn}")
+            cardElement(c.showBottomCard(), key=f"L{cn}")
             for cn, c in enumerate(cardpiles)
         ]
         foundationelements = [
-            cg.cardElement(a.showBottomCard(), key=f"A{cn + acn}")
+            cardElement(a.showBottomCard(), key=f"A{cn + acn}")
             for acn, a in enumerate(acepiles)
         ]
         blank = sg.Image(image.blankImage(), background_color=bgcolour)
