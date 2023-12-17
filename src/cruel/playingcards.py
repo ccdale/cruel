@@ -176,7 +176,7 @@ class Stack:
 
     def showBottomCard(self):
         try:
-            log.debug(f"{self.cards=}")
+            # log.debug(f"showBottomCard: {self.cards=}")
             if len(self.cards) > 0:
                 return self.cards[-1]
             else:
