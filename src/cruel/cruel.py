@@ -139,6 +139,7 @@ def gameWindow():
             cardElement(c.showBottomCard(), key=f"L{cn}")
             for cn, c in enumerate(cardpiles)
         ]
+        cn = len(cardpileelements)
         foundationelements = [
             cardElement(a.showBottomCard(), key=f"A{cn + acn}")
             for acn, a in enumerate(acepiles)
