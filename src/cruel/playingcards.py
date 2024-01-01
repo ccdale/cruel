@@ -202,9 +202,14 @@ class Stack:
 class Deck(Stack):
     def __init__(self, pullaces=False, facedown=False):
         try:
-            self.cards = [Card(i) for i in range(52)]
+            self.cards = [Card(i) for i in range(1, 53)]
+            self.aces = None
             if pullaces:
-                self.cards = [card for card in self.cards if card.value != 0]
+                self.aces = []
+                for i in range(0, 52, 13):
+                    self.aces.append(self.cards.pop(i))
+                # self.cards = [card for card in self.cards if card.value != 1]
+                [card.flip() for card in self.aces if facedown]
             [card.flip() for card in self.cards if facedown]
         except Exception as e:
             errorNotify(sys.exc_info()[2], e)

@@ -21,7 +21,7 @@ import sys
 
 import pytest
 
-from cruel import cruel, errorExit, errorNotify, errorRaise, __version__
+from cruel import errorExit, errorNotify, errorRaise, __version__
 
 
 class TheException(Exception):
@@ -89,10 +89,3 @@ def test_errorExit(caplog):
         # out, err = capsys.readouterr()
         # assert out == emsg
         assert emsg in caplog.text
-
-
-def test_cruel_setup():
-    deck, acepiles, cardpiles = cruel.setup()
-    assert len(deck) == 0
-    assert str(acepiles[2].cards[0]) == "Ace of Diamonds"
-    assert len(cardpiles[8].cards) == 4

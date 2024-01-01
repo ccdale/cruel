@@ -115,17 +115,20 @@ def cardElement(card, bordercolour=None, pad=(10, 10), key=None):
 
 def setup():
     try:
-        aces = [pc.Card(i) for i in range(0, 52, 13)]
-        acepiles = []
+        deck = pc.Deck(pullaces=True, facedown=False)
+        # aces = [pc.Card(i) for i in range(1, 52, 13)]
+        log.debug(f"{deck.aces=}")
+        # acepiles = []
         # for cn, ace in enumerate(aces):
         #     acepiles.append(CruelPile(cn + 12, direction=1, cardslist=[ace]))
         acepiles = [
             CruelPile(cn + 12, direction=1, cardslist=[ace])
-            for cn, ace in enumerate(aces)
+            for cn, ace in enumerate(deck.aces)
         ]
-        deck = pc.Deck(pullaces=True, facedown=False)
-        deck.shuffle()
-        cardpiles = [CruelPile(i, cardslist=deck.deal(4)) for i in range(12)]
+        # deck.shuffle()
+        clists = [deck.deal(4) for i in range(12)]
+        log.debug(f"{clists=}")
+        cardpiles = [CruelPile(i, cardslist=clists[i]) for i in range(12)]
         return (deck, acepiles, cardpiles)
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
@@ -136,18 +139,25 @@ def gameWindow():
     try:
         deck, acepiles, cardpiles = setup()
         cardpileelements = [
-            cardElement(c.showBottomCard(), key=f"L{cn}")
-            for cn, c in enumerate(cardpiles)
+            cardElement(c.showBottomCard(), key=f"L{c.id}") for c in cardpiles
         ]
         cn = len(cardpileelements)
         foundationelements = [
-            cardElement(a.showBottomCard(), key=f"A{cn + acn}")
-            for acn, a in enumerate(acepiles)
+            cardElement(c.showBottomCard(), key=f"L{c.id}")
+            # cardElement(a.showBottomCard(), key=f"A{cn + acn}")
+            for c in acepiles
+            # for acn, a in enumerate(acepiles)
         ]
-        blank = sg.Image(image.blankImage(), background_color=bgcolour)
-        blankr = blank.copy()
+        blank = sg.Image(filename=image.blankImage(), background_color=bgcolour)
+        blankr = sg.Image(filename=image.blankImage(), background_color=bgcolour)
         rows = []
-        rows.append([blank, foundationelements, blankr])
+        # row = [blank]
+        row = [sg.Push()]
+        row.extend(foundationelements)
+        row.append(sg.Push())
+        # row.append(blankr)
+        # rows.append([blank, foundationelements, blankr])
+        rows.append(row)
         rows.append([cardpileelements[:6]])
         rows.append([cardpileelements[6:]])
         layout = [rows[0], rows[1], rows[2]]

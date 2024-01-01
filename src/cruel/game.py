@@ -24,7 +24,8 @@ from cruel import (
     __appname__,
     __version__,
     errorExit,
-    cardgui as cg,
+    errorNotify,
+    cruelcards as cc,
 )
 
 """Cruel Card Game main module."""
@@ -37,7 +38,18 @@ def newGame():
     try:
         log.info(f"Starting new game of {__appname__} {__version__}")
         # define the card piles and the foundation (aces) piles
-        cg.gameWindow()
+        cc.gameWindow()
         log.info(f"{__appname__} completed, Exiting.")
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
+
+
+def main():
+    try:
+        newGame()
+    except Exception as e:
+        errorNotify(sys.exc_info()[2], e)
+
+
+if __name__ == "__main__":
+    main()
