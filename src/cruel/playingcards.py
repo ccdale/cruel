@@ -47,35 +47,37 @@ class CardName:
 
     def __init__(self, cardnumber):
         try:
+            log.debug(f"creating CardName({cardnumber=})")
             self.cardnumber = cardnumber
             self.value = self.cardnumber % 13
             self.valuename = self.valueNames[self.value]
-            self.suitindex = self.cardnumber // 13
+            self.suitindex = (self.cardnumber - 1) // 13
+            log.debug(f"{self.suitindex=}")
             self.suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
             self.suit = self.suits[self.suitindex]
             self.hidename = False
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def valtuple(self):
         try:
             return (self.value, self.suit, self.cardnumber)
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def __str__(self):
         try:
             cname = "Face Down" if self.hidename else f"{self.valuename} of {self.suit}"
             return cname
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def __repr__(self):
         try:
             cnum = "Face Down" if self.hidename else self.cardnumber
             return f"CardName({cnum})"
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
 
 class Card:
@@ -89,20 +91,20 @@ class Card:
             self.image = image.cardImage(self.cardnumber)
             self.backimage = image.cardImage(0)
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def __str__(self):
         try:
             return self.cardname.__str__()
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def __repr__(self):
         try:
             cnum = "'Face Down'" if self.facedown else self.cardnumber
             return f"Card({cnum})"
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def flip(self):
         try:
@@ -110,69 +112,70 @@ class Card:
             self.cardname.hidename = self.facedown
             return self.facedown
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def getImage(self):
         try:
             return self.backimage if self.facedown else self.image
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
 
 class Stack:
     def __init__(self, cards=None):
         try:
+            log.debug(f"creating Stack({cards=})")
             self.cards = cards if isinstance(cards, list) else []
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def __repr__(self):
         try:
             return f"Stack({self.cards})"
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def __str__(self):
         try:
             return f"{self.cards}"
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def __len__(self):
         try:
             return len(self.cards)
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def append(self, card):
         try:
             self.cards.append(card)
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def pop(self):
         try:
             return self.cards.pop()
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def clear(self):
         try:
             self.cards.clear()
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def topCard(self):
         try:
             return self.cards.pop(0)
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def bottomCard(self):
         try:
             return self.pop()
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def showBottomCard(self):
         try:
@@ -182,49 +185,54 @@ class Stack:
             else:
                 return None
         except Exception as e:
-            # errorNotify(sys.exc_info()[2], e)
+            # errorRaise(sys.exc_info()[2], e)
             errorRaise(sys.exc_info()[2], e)
 
     def show(self):
         try:
             return self.showBottomCard()
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def appendStack(self, stack):
         try:
             self.cards.extend(stack.cards)
             stack.clear()
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
 
 class Deck(Stack):
     def __init__(self, pullaces=False, facedown=False):
         try:
+            log.debug(f"creating Deck({pullaces=}, {facedown=})")
             self.cards = [Card(i) for i in range(1, 53)]
             self.aces = None
             if pullaces:
                 self.aces = []
-                for i in range(0, 52, 13):
+                acepos = [i for i in range(0, 52, 13)]
+                # we need to pull the aces in reverse order
+                # as when we pop each of them off the deck
+                # all the cards change position by 1
+                acepos.reverse()
+                for i in acepos:
                     self.aces.append(self.cards.pop(i))
-                # self.cards = [card for card in self.cards if card.value != 1]
                 [card.flip() for card in self.aces if facedown]
             [card.flip() for card in self.cards if facedown]
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def shuffle(self):
         try:
             shuffle(self.cards)
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def deal(self, number=1):
         try:
             return [self.topCard() for i in range(number)]
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
     def dealStack(self, number=1):
         try:
@@ -232,7 +240,7 @@ class Deck(Stack):
             stack.cards = self.deal(number)
             return stack
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
 
 class Pile:
@@ -242,7 +250,7 @@ class Pile:
             self.col = col
             self.stack = stack
         except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
+            errorRaise(sys.exc_info()[2], e)
 
 
 def acesStacks():
