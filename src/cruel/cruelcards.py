@@ -143,7 +143,7 @@ def gameWindow():
         ]
         cn = len(cardpileelements)
         foundationelements = [
-            cardElement(c.showBottomCard(), key=f"A {c.id}")
+            cardElement(c.showBottomCard(), key=f"L {c.id}")
             # cardElement(a.showBottomCard(), key=f"A{cn + acn}")
             for c in acepiles
             # for acn, a in enumerate(acepiles)
@@ -175,11 +175,31 @@ def gameWindow():
             background_color="green",
         )
         window.bind("<Control-q>", "CQHit")
+        for id in range(16):
+            window[f"L {id}"].bind("<ButtonRelease-1>", "")
+        selected = None
         while True:
             event, values = window.read()
             log.debug(f"{event=} {values=}")
             if event == sg.WIN_CLOSED or event == "CQHit" or event == "Quit":
                 break
+            elif event == "New Game":
+                pass
+            elif event == "Re-Deal":
+                pass
+            elif event.startswith("L "):
+                if selected is None:
+                    id = int(event[2:])
+                    window[event].update(
+                        filename=cardpiles[id].showBottomCard().inverted
+                    )
+                    selected = event
+                else:
+                    id = int(selected[2:])
+                    window[selected].update(
+                        filename=cardpiles[id].showBottomCard().image
+                    )
+                    selected = None
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
 
