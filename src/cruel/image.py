@@ -69,7 +69,7 @@ def cardImage(cardnumber, cardsize=(100, 140)):
             with Image.open(cardfile) as cardimage:
                 out = cardimage.resize(cardsize)
                 out.save(wanted)
-                invertedim = ImageOps.invert(out)
+                invertedim = ImageOps.invert(out.convert("RGB"))
                 invertedim.save(inverted)
                 log.debug(f"Created card image {wanted} and inverted image {inverted}")
         return wanted
