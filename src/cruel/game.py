@@ -26,11 +26,12 @@ from cruel import (
     errorExit,
     errorNotify,
     cruelcards as cc,
+    log,
 )
 
 """Cruel Card Game main module."""
 
-log = ccalogging.log
+# log = ccalogging.log
 
 
 def newGame():

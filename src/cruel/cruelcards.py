@@ -139,17 +139,17 @@ def gameWindow():
     try:
         deck, acepiles, cardpiles = setup()
         cardpileelements = [
-            cardElement(c.showBottomCard(), key=f"L{c.id}") for c in cardpiles
+            cardElement(c.showBottomCard(), key=f"L {c.id}") for c in cardpiles
         ]
         cn = len(cardpileelements)
         foundationelements = [
-            cardElement(c.showBottomCard(), key=f"L{c.id}")
+            cardElement(c.showBottomCard(), key=f"A {c.id}")
             # cardElement(a.showBottomCard(), key=f"A{cn + acn}")
             for c in acepiles
             # for acn, a in enumerate(acepiles)
         ]
-        blank = sg.Image(filename=image.blankImage(), background_color=bgcolour)
-        blankr = sg.Image(filename=image.blankImage(), background_color=bgcolour)
+        # blank = sg.Image(filename=image.blankImage(), background_color=bgcolour)
+        # blankr = sg.Image(filename=image.blankImage(), background_color=bgcolour)
         rows = []
         # row = [blank]
         row = [sg.Push()]
@@ -160,17 +160,29 @@ def gameWindow():
         rows.append(row)
         rows.append([cardpileelements[:6]])
         rows.append([cardpileelements[6:]])
-        layout = [rows[0], rows[1], rows[2]]
+        row = [
+            sg.Button("New Game"),
+            sg.Push(),
+            sg.Button("Re-Deal"),
+            sg.Push(),
+            sg.Button("Quit"),
+        ]
+        layout = [rows[0], rows[1], rows[2], row]
         window = sg.Window(
             f"{__appname__} {__version__}",
             layout,
             finalize=True,
             background_color="green",
         )
+        window.bind("<Control-q>", "CQHit")
         while True:
             event, values = window.read()
-            log.debug(f"{event=}")
-            if event == sg.WIN_CLOSED:
+            log.debug(f"{event=} {values=}")
+            if event == sg.WIN_CLOSED or event == "CQHit" or event == "Quit":
                 break
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
+
+
+if __name__ == "__main__":
+    gameWindow()

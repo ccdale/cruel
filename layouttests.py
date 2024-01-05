@@ -62,10 +62,14 @@ def layoutTest():
             [sg.Column([[f for f in frames[:6]]])],
             [sg.Column([[f for f in frames[6:]]])],
         ]
+        clayout1.append(
+            [sg.Push(), sg.Button("New Game"), sg.Button("Shuffle"), sg.Push()]
+        )
 
         window = sg.Window(f"{__appname__} {__version__}", clayout1, finalize=True)
         while True:
             event, values = window.read()
+            log.debug(f"{event=} {values=}")
             if event == sg.WIN_CLOSED:
                 break
 

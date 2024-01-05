@@ -21,13 +21,12 @@ from pathlib import Path
 import sys
 
 import ccalogging
-from PIL import Image
+from PIL import Image, ImageOps
 
-from cruel import __appname__, __version__, errorExit, errorNotify, errorRaise
+from cruel import __appname__, __version__, errorExit, errorNotify, errorRaise, log
 
 """Cruel Card Game image module."""
 
-log = ccalogging.log
 
 imagepath = Path(__file__).parent.parent.parent / "images"
 log.debug(f"imagepath = {imagepath}")
@@ -55,23 +54,24 @@ def getWantedSize(cardnumber, cardsize=(100, 140)):
         sizepath = cachepath / f"{cardwidth}x{cardheight}"
         if not sizepath.exists():
             sizepath.mkdir(parents=True)
-        return sizepath / f"{cardnumber}_{cardwidth}x{cardheight}.png"
+        cardpath = sizepath / f"{cardnumber}_{cardwidth}x{cardheight}.png"
+        invertedpath = sizepath / f"{cardnumber}_inverted_{cardwidth}x{cardheight}.png"
+        return cardpath, invertedpath
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
 
 
 def cardImage(cardnumber, cardsize=(100, 140)):
     try:
-        wanted = getWantedSize(cardnumber, cardsize)
+        wanted, inverted = getWantedSize(cardnumber, cardsize)
         if not wanted.exists():
             cardfile = getCardFile(cardnumber)
             with Image.open(cardfile) as cardimage:
                 out = cardimage.resize(cardsize)
                 out.save(wanted)
-        # else:
-        #     out = Image.open(wanted)
-        # return out
-        # log.debug(f"cardImage: {cardnumber=} Returning {wanted=}")
+                invertedim = ImageOps.invert(out)
+                invertedim.save(inverted)
+                log.debug(f"Created card image {wanted} and inverted image {inverted}")
         return wanted
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
