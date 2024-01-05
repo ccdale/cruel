@@ -190,15 +190,13 @@ def gameWindow():
             elif event.startswith("L "):
                 if selected is None:
                     id = int(event[2:])
-                    window[event].update(
-                        filename=cardpiles[id].showBottomCard().inverted
-                    )
+                    piles = cardpiles if id < 12 else acepiles
+                    window[event].update(filename=piles[id].showBottomCard().inverted)
                     selected = event
                 else:
                     id = int(selected[2:])
-                    window[selected].update(
-                        filename=cardpiles[id].showBottomCard().image
-                    )
+                    piles = cardpiles if id < 12 else acepiles
+                    window[selected].update(filename=piles[id].showBottomCard().image)
                     selected = None
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
