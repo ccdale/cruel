@@ -174,7 +174,7 @@ class Stack:
 
     def bottomCard(self):
         try:
-            return self.pop()
+            return self.cards.pop()
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
@@ -231,7 +231,11 @@ class Deck(Stack):
 
     def deal(self, number=1):
         try:
-            return [self.topCard() for i in range(number)]
+            if number > len(self.cards):
+                number = len(self.cards)
+            if number > 0:
+                return [self.topCard() for i in range(number)]
+            return []
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
