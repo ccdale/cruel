@@ -89,6 +89,7 @@ class Card:
             self.cardsize = cardsize
             self.value, self.suit, self.cardnumber = self.cardname.valtuple()
             self.image = image.cardImage(self.cardnumber)
+            self.inverted = image.invertedImage(self.cardnumber)
             self.backimage = image.cardImage(0)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
