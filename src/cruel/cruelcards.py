@@ -107,7 +107,7 @@ class CruelPile(pc.Stack):
 
 def cardElement(card, bordercolour=None, pad=(10, 10), key=None):
     try:
-        elem = sg.Image(filename=card.getImage(), background_color=bgcolour)
+        elem = sg.Image(filename=card.getImage(), background_color=bgcolour, key=key)
         return sg.Column([[elem]], background_color=bordercolour, pad=pad)
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)

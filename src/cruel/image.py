@@ -23,7 +23,7 @@ import sys
 import ccalogging
 from PIL import Image, ImageOps
 
-from cruel import __appname__, __version__, errorExit, errorNotify, errorRaise, log
+from cruel import __appname__, __version__, errorExit, errorRaise, log
 
 """Cruel Card Game image module."""
 
@@ -45,7 +45,7 @@ def getCardFile(cardnumber):
             raise Exception(f"Card image file {cardfile} does not exist")
         return cardfile
     except Exception as e:
-        errorNotify(sys.exc_info()[2], e)
+        errorRaise(sys.exc_info()[2], e)
 
 
 def getWantedSize(cardnumber, cardsize=(100, 140)):
@@ -58,7 +58,7 @@ def getWantedSize(cardnumber, cardsize=(100, 140)):
         invertedpath = sizepath / f"{cardnumber}_inverted_{cardwidth}x{cardheight}.png"
         return cardpath, invertedpath
     except Exception as e:
-        errorNotify(sys.exc_info()[2], e)
+        errorRaise(sys.exc_info()[2], e)
 
 
 def cardImage(cardnumber, cardsize=(100, 140)):
@@ -75,6 +75,14 @@ def cardImage(cardnumber, cardsize=(100, 140)):
         return wanted
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
+
+
+def invertedImage(cardnumber, cardsize=(100, 140)):
+    try:
+        wanted, inverted = getWantedSize(cardnumber, cardsize)
+        return inverted
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)
 
 
 def blankImage(cardsize=(100, 140)):
