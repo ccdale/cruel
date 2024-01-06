@@ -21,105 +21,20 @@ import sys
 
 import ccalogging
 
-from cruel import errorExit, errorNotify, errorRaise, __appname__, __version__, image
+from cruel import (
+    errorExit,
+    errorNotify,
+    errorRaise,
+    __appname__,
+    __version__,
+    image,
+)
+from cruel.cardname import CardName
+from cruel.card import Card
 
 """Playing cards module for the game Cruel."""
 
 log = ccalogging.log
-
-
-class CardName:
-    valueNames = [
-        "Ace",
-        "Two",
-        "Three",
-        "Four",
-        "Five",
-        "Six",
-        "Seven",
-        "Eight",
-        "Nine",
-        "Ten",
-        "Jack",
-        "Queen",
-        "King",
-    ]
-
-    def __init__(self, cardnumber):
-        try:
-            log.debug(f"creating CardName({cardnumber=})")
-            self.cardnumber = cardnumber
-            self.value = self.cardnumber % 13
-            self.valuename = self.valueNames[self.value]
-            self.suitindex = (self.cardnumber - 1) // 13
-            log.debug(f"{self.suitindex=}")
-            self.suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
-            self.suit = self.suits[self.suitindex]
-            self.hidename = False
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-    def valtuple(self):
-        try:
-            return (self.value, self.suit, self.cardnumber)
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-    def __str__(self):
-        try:
-            cname = "Face Down" if self.hidename else f"{self.valuename} of {self.suit}"
-            return cname
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-    def __repr__(self):
-        try:
-            cnum = "Face Down" if self.hidename else self.cardnumber
-            return f"CardName({cnum})"
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-
-class Card:
-    def __init__(self, cardnumber, facedown=False, cardsize=(100, 140)):
-        try:
-            # log.debug(f"creating card {cardnumber=}, {facedown=}, {cardsize=}")
-            self.cardname = CardName(cardnumber)
-            self.facedown = facedown
-            self.cardsize = cardsize
-            self.value, self.suit, self.cardnumber = self.cardname.valtuple()
-            self.image = image.cardImage(self.cardnumber, cardsize=self.cardsize)
-            self.inverted = image.invertedImage(self.cardnumber, cardsize=self.cardsize)
-            self.backimage = image.cardImage(0)
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-    def __str__(self):
-        try:
-            return self.cardname.__str__()
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-    def __repr__(self):
-        try:
-            cnum = "'Face Down'" if self.facedown else self.cardnumber
-            return f"Card({cnum})"
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-    def flip(self):
-        try:
-            self.facedown = not self.facedown
-            self.cardname.hidename = self.facedown
-            return self.facedown
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-    def getImage(self):
-        try:
-            return self.backimage if self.facedown else self.image
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
 
 
 class Stack:
@@ -156,6 +71,8 @@ class Stack:
 
     def pop(self, position=-1):
         try:
+            if len(self.cards) == 0:
+                return None
             return self.cards.pop(position)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)

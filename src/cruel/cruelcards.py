@@ -36,30 +36,6 @@ from cruel import (
 """Game module for the game cruel."""
 
 
-class CruelGame:
-    """CruelGame class is the main class for drawing and playing the game Cruel."""
-
-    def __init__(self, cardwidth=100, theme="DarkGreen4"):
-        try:
-            self.cardsize = (cardwidth, int(cardwidth * 1.4))
-            padding = int(cardwidth * 0.1)
-            self.padding = (padding, padding)
-            sg.theme(theme)
-            self.deck = pc.Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
-            self.acepiles = [
-                cp.CruelPile(cn + 12, direction=1, cardslist=[ace])
-                for cn, ace in enumerate(self.deck.aces)
-            ]
-            self.cardpiles = [
-                cp.CruelPile(i, cardslist=self.deck.deal(4)) for i in range(12)
-            ]
-            self.doredraw = True
-            self.selected = None
-            self.window = None
-        except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
-
-
 def cardElement(card, key, bordercolour=None, pad=(10, 10)):
     try:
         elem = sg.Image(

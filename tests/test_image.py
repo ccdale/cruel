@@ -30,12 +30,15 @@ def test_getCardFile():
 
 
 def test_getWantedSize():
-    expected = Path(image.cachepath / "100x140" / "1_100x140.png")
+    expected = (
+        Path(image.cachepath / "100x140" / "1_100x140.png"),
+        Path(image.cachepath / "100x140" / "1_inverted_100x140.png"),
+    )
     assert image.getWantedSize(1) == expected
 
 
 def test_cardImage():
-    wanted = image.getWantedSize(1)
+    wanted, inverted = image.getWantedSize(1)
     im = image.cardImage(1)
     assert wanted == im
     # assert isinstance(im, type(Image.open(wanted)))

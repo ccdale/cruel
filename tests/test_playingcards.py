@@ -17,10 +17,11 @@
 #     along with cruel.  If not, see <http://www.gnu.org/licenses/>.
 #
 from cruel import playingcards as pc
+from cruel.cardname import CardName
 
 
 def test_CardName():
-    cn = pc.CardName(2)
+    cn = CardName(2)
     assert cn.cardnumber == 2
     assert cn.value == 2
     assert cn.suitindex == 0
@@ -31,7 +32,7 @@ def test_CardName():
 
 
 def test_CardName_High_card():
-    cn = pc.CardName(51)
+    cn = CardName(51)
     assert cn.cardnumber == 51
     assert cn.value == 12
     assert cn.suitindex == 3
@@ -48,7 +49,7 @@ def test_Stack_length():
 
 def test_Stack_append():
     s = pc.Stack()
-    s.append(pc.CardName(2))
+    s.append(CardName(2))
     assert len(s) == 1
     assert s.cards[0].cardnumber == 2
     assert repr(s.cards[0]) == "CardName(2)"
@@ -58,7 +59,7 @@ def test_Stack_append():
 
 def test_Stack_clear():
     s = pc.Stack()
-    s.append(pc.CardName(2))
+    s.append(CardName(2))
     assert len(s) == 1
     s.clear()
     assert len(s) == 0
@@ -66,7 +67,7 @@ def test_Stack_clear():
 
 def test_Stack_pop():
     s = pc.Stack()
-    s.append(pc.CardName(2))
+    s.append(CardName(2))
     assert len(s) == 1
     assert s.pop().cardnumber == 2
     assert len(s) == 0
@@ -81,7 +82,7 @@ def test_Stack_pop_empty():
 
 def test_Stack_topCard():
     s = pc.Stack()
-    s.append(pc.CardName(2))
+    s.append(CardName(2))
     assert len(s) == 1
     assert s.topCard().cardnumber == 2
     assert len(s) == 0
@@ -96,7 +97,7 @@ def test_Stack_topCard_empty():
 
 def test_Stack_bottomCard():
     s = pc.Stack()
-    s.append(pc.CardName(2))
+    s.append(CardName(2))
     assert len(s) == 1
     assert s.bottomCard().cardnumber == 2
     assert len(s) == 0
@@ -121,7 +122,7 @@ def test_Stack_showBottomCard():
 
 def test_Stack_show_1st():
     s = pc.Stack()
-    s.append(pc.CardName(2))
+    s.append(CardName(2))
     assert len(s) == 1
     assert s.show().cardnumber == 2
     assert len(s) == 1
@@ -146,9 +147,9 @@ def test_Stack_show_empty():
 
 def test_Stack_appendStack():
     s = pc.Stack()
-    s.append(pc.CardName(2))
+    s.append(CardName(2))
     s2 = pc.Stack()
-    s2.append(pc.CardName(3))
+    s2.append(CardName(3))
     s.appendStack(s2)
     assert len(s) == 2
     assert len(s2) == 0

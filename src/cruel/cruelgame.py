@@ -30,6 +30,14 @@ class CruelGame:
             padding = int(cardwidth * 0.1)
             self.padding = (padding, padding)
             sg.theme(theme)
+            self.doredraw = True
+            self.selected = None
+            self.window = None
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def setupGame():
+        try:
             self.deck = pc.Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
             self.acepiles = [
                 cp.CruelPile(cn + 12, direction=1, cardslist=[ace])
@@ -38,8 +46,5 @@ class CruelGame:
             self.cardpiles = [
                 cp.CruelPile(i, cardslist=self.deck.deal(4)) for i in range(12)
             ]
-            self.doredraw = True
-            self.selected = None
-            self.window = None
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
