@@ -105,6 +105,26 @@ class CruelPile(pc.Stack):
             errorNotify(sys.exc_info()[2], e)
 
 
+class CruelGame:
+    """CruelGame class is the main class for drawing and playing the game Cruel."""
+
+    def __init__(self, cardsize=(100, 140)):
+        try:
+            self.deck = pc.Deck(pullaces=True, facedown=False, cardsize=cardsize)
+            self.acepiles = [
+                CruelPile(cn + 12, direction=1, cardslist=[ace])
+                for cn, ace in enumerate(self.deck.aces)
+            ]
+            self.cardpiles = [
+                CruelPile(i, cardslist=self.deck.deal(4)) for i in range(12)
+            ]
+            self.doredraw = True
+            self.selected = None
+            self.window = None
+        except Exception as e:
+            errorNotify(sys.exc_info()[2], e)
+
+
 def cardElement(card, bordercolour=None, pad=(10, 10), key=None):
     try:
         elem = sg.Image(filename=card.getImage(), background_color=bgcolour, key=key)
@@ -115,7 +135,7 @@ def cardElement(card, bordercolour=None, pad=(10, 10), key=None):
 
 def setup():
     try:
-        deck = pc.Deck(pullaces=True, facedown=False)
+        deck = pc.Deck(pullaces=True, facedown=False, cardsize=(150, 210))
         # aces = [pc.Card(i) for i in range(1, 52, 13)]
         log.debug(f"{deck.aces=}")
         # acepiles = []

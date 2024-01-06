@@ -88,8 +88,8 @@ class Card:
             self.facedown = facedown
             self.cardsize = cardsize
             self.value, self.suit, self.cardnumber = self.cardname.valtuple()
-            self.image = image.cardImage(self.cardnumber)
-            self.inverted = image.invertedImage(self.cardnumber)
+            self.image = image.cardImage(self.cardnumber, cardsize=self.cardsize)
+            self.inverted = image.invertedImage(self.cardnumber, cardsize=self.cardsize)
             self.backimage = image.cardImage(0)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
@@ -154,9 +154,9 @@ class Stack:
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
-    def pop(self):
+    def pop(self, position=-1):
         try:
-            return self.cards.pop()
+            return self.cards.pop(position)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
@@ -168,13 +168,13 @@ class Stack:
 
     def topCard(self):
         try:
-            return self.cards.pop(0)
+            return self.pop(0)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
     def bottomCard(self):
         try:
-            return self.cards.pop()
+            return self.pop()
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
@@ -231,8 +231,7 @@ class Deck(Stack):
 
     def deal(self, number=1):
         try:
-            if number > len(self.cards):
-                number = len(self.cards)
+            number = min(number, len(self.cards))
             if number > 0:
                 return [self.topCard() for i in range(number)]
             return []
@@ -241,9 +240,8 @@ class Deck(Stack):
 
     def dealStack(self, number=1):
         try:
-            stack = Stack()
-            stack.cards = self.deal(number)
-            return stack
+            cards = self.deal(number)
+            return Stack(cards)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
