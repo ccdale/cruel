@@ -16,7 +16,6 @@
 #     You should have received a copy of the GNU General Public License
 #     along with cruel.  If not, see <http://www.gnu.org/licenses/>.
 #
-from cruel import playingcards as pc
 from cruel.cardname import CardName
 
 
