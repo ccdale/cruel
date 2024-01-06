@@ -108,9 +108,10 @@ class CruelPile(pc.Stack):
 class CruelGame:
     """CruelGame class is the main class for drawing and playing the game Cruel."""
 
-    def __init__(self, cardwidth=100):
+    def __init__(self, cardwidth=100, theme="DarkGreen4"):
         try:
             self.cardsize = (cardwidth, int(cardwidth * 1.4))
+            sg.theme(theme)
             self.deck = pc.Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
             self.acepiles = [
                 CruelPile(cn + 12, direction=1, cardslist=[ace])
@@ -126,10 +127,15 @@ class CruelGame:
             errorNotify(sys.exc_info()[2], e)
 
 
-def cardElement(card, bordercolour=None, pad=(10, 10), key=None):
+def cardElement(card, key, bordercolour=None, pad=(10, 10)):
     try:
-        elem = sg.Image(filename=card.getImage(), background_color=bgcolour, key=key)
-        return sg.Column([[elem]], background_color=bordercolour, pad=pad)
+        elem = sg.Image(
+            filename=card.getImage(), background_color=bgcolour, key=key, pad=pad
+        )
+        # return sg.Column(
+        # [[elem]], background_color=bordercolour, pad=pad, key=f"B {key}"
+        # )
+        return elem
     except Exception as e:
         errorNotify(sys.exc_info()[2], e)
 
@@ -161,14 +167,11 @@ def gameWindow():
         sg.theme("DarkGreen4")
         deck, acepiles, cardpiles = setup()
         cardpileelements = [
-            cardElement(c.showBottomCard(), key=f"L {c.id}") for c in cardpiles
+            cardElement(c.showBottomCard(), f"L {c.id}") for c in cardpiles
         ]
         cn = len(cardpileelements)
         foundationelements = [
-            cardElement(c.showBottomCard(), key=f"L {c.id}")
-            # cardElement(a.showBottomCard(), key=f"A{cn + acn}")
-            for c in acepiles
-            # for acn, a in enumerate(acepiles)
+            cardElement(c.showBottomCard(), f"L {c.id}") for c in acepiles
         ]
         # blank = sg.Image(filename=image.blankImage(), background_color=bgcolour)
         # blankr = sg.Image(filename=image.blankImage(), background_color=bgcolour)
@@ -211,15 +214,19 @@ def gameWindow():
             elif event.startswith("L "):
                 if selected is None:
                     id = int(event[2:])
+                    # border = f"B {event}"
                     piles = cardpiles if id < 12 else acepiles
                     xid = id if id < 12 else id - 12
                     window[event].update(filename=piles[xid].showBottomCard().inverted)
+                    # window[border].update(background_color="red")
                     selected = event
                 else:
                     id = int(selected[2:])
+                    # border = f"B {selected}"
                     piles = cardpiles if id < 12 else acepiles
                     xid = id if id < 12 else id - 12
                     window[selected].update(filename=piles[xid].showBottomCard().image)
+                    # window[border].update(background_color=bgcolour)
                     selected = None
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
