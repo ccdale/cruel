@@ -108,9 +108,10 @@ class CruelPile(pc.Stack):
 class CruelGame:
     """CruelGame class is the main class for drawing and playing the game Cruel."""
 
-    def __init__(self, cardsize=(100, 140)):
+    def __init__(self, cardwidth=100):
         try:
-            self.deck = pc.Deck(pullaces=True, facedown=False, cardsize=cardsize)
+            self.cardsize = (cardwidth, int(cardwidth * 1.4))
+            self.deck = pc.Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
             self.acepiles = [
                 CruelPile(cn + 12, direction=1, cardslist=[ace])
                 for cn, ace in enumerate(self.deck.aces)
