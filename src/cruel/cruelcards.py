@@ -52,7 +52,7 @@ def cardElement(card, key, bordercolour=None, pad=(10, 10)):
 def setup():
     try:
         deck = Deck(
-            pullaces=True, facedown=False, shuffleaces=True, cardsize=(150, 210)
+            pullaces=True, facedown=False, shuffleaces=False, cardsize=(150, 210)
         )
         # aces = [pc.Card(i) for i in range(1, 52, 13)]
         log.debug(f"{deck.aces=}")
