@@ -30,79 +30,10 @@ from cruel import (
     image,
     log,
     playingcards as pc,
+    cruelpile as cp,
 )
 
 """Game module for the game cruel."""
-
-
-class CruelPile(pc.Stack):
-    """CruelPile class is a subclass of Stack for the game Cruel."""
-
-    def __init__(self, pileid, direction=-1, cardslist=None):
-        """Initialise the CruelPile class.
-        pileid is an integer to form the key for pysimplegui columns
-        direction argument shows which direction the cards are placed on the pile.
-        -1 is down, 1 is up.
-        This argument is directly used to test the validity of a card move.
-        cardslist argument is a list of cards to be placed on the pile.
-        """
-        try:
-            super().__init__()
-            self.id = pileid
-            self.key = f"pile{self.id}"
-            self.direction = direction
-            self.image = image.blankImage()
-            self.doredraw = True
-            if cardslist is not None:
-                self.setCards(cardslist)
-            if self.doredraw:
-                self.redraw()
-        except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
-
-    def redraw(self):
-        try:
-            if len(self.cards) > 0:
-                self.image = self.show().getImage()
-            else:
-                self.image = image.blankImage()
-            self.doredraw = False
-        except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
-
-    def setCards(self, cardslist):
-        try:
-            self.cards = cardslist
-            self.doredraw = True
-        except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
-
-    def test(self, card):
-        """Test if a card can be added to the pile"""
-        try:
-            log.debug(f"test: {len(self)=}")
-            if len(self):
-                expected = self.show().cardnumber + self.direction
-                log.debug(f"test: {expected=}")
-                log.debug(f"test: {card.cardnumber=}")
-                if card.cardnumber == expected:
-                    log.debug("test: True")
-                    return True
-            log.debug("test: False")
-            return False
-        except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
-
-    def testAndAdd(self, card):
-        """Test if a card can be added to the pile and add it if it can be"""
-        try:
-            if self.test(card):
-                self.append(card)
-                self.redraw()
-                return True
-            return False
-        except Exception as e:
-            errorNotify(sys.exc_info()[2], e)
 
 
 class CruelGame:
@@ -111,14 +42,16 @@ class CruelGame:
     def __init__(self, cardwidth=100, theme="DarkGreen4"):
         try:
             self.cardsize = (cardwidth, int(cardwidth * 1.4))
+            padding = int(cardwidth * 0.1)
+            self.padding = (padding, padding)
             sg.theme(theme)
             self.deck = pc.Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
             self.acepiles = [
-                CruelPile(cn + 12, direction=1, cardslist=[ace])
+                cp.CruelPile(cn + 12, direction=1, cardslist=[ace])
                 for cn, ace in enumerate(self.deck.aces)
             ]
             self.cardpiles = [
-                CruelPile(i, cardslist=self.deck.deal(4)) for i in range(12)
+                cp.CruelPile(i, cardslist=self.deck.deal(4)) for i in range(12)
             ]
             self.doredraw = True
             self.selected = None
@@ -147,15 +80,15 @@ def setup():
         log.debug(f"{deck.aces=}")
         # acepiles = []
         # for cn, ace in enumerate(aces):
-        #     acepiles.append(CruelPile(cn + 12, direction=1, cardslist=[ace]))
+        #     acepiles.append(cp.CruelPile(cn + 12, direction=1, cardslist=[ace]))
         acepiles = [
-            CruelPile(cn + 12, direction=1, cardslist=[ace])
+            cp.CruelPile(cn + 12, direction=1, cardslist=[ace])
             for cn, ace in enumerate(deck.aces)
         ]
         # deck.shuffle()
         clists = [deck.deal(4) for i in range(12)]
         log.debug(f"{clists=}")
-        cardpiles = [CruelPile(i, cardslist=clists[i]) for i in range(12)]
+        cardpiles = [cp.CruelPile(i, cardslist=clists[i]) for i in range(12)]
         return (deck, acepiles, cardpiles)
     except Exception as e:
         errorExit(sys.exc_info()[2], e)
