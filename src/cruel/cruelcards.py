@@ -137,6 +137,7 @@ def setup():
 def gameWindow():
     """Create the game window. Run the game."""
     try:
+        sg.theme("DarkGreen4")
         deck, acepiles, cardpiles = setup()
         cardpileelements = [
             cardElement(c.showBottomCard(), key=f"L {c.id}") for c in cardpiles
@@ -172,7 +173,6 @@ def gameWindow():
             f"{__appname__} {__version__}",
             layout,
             finalize=True,
-            background_color="green",
         )
         window.bind("<Control-q>", "CQHit")
         for id in range(16):
