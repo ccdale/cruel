@@ -204,10 +204,10 @@ class Stack:
 
 
 class Deck(Stack):
-    def __init__(self, pullaces=False, facedown=False):
+    def __init__(self, pullaces=False, facedown=False, cardsize=(100, 140)):
         try:
             log.debug(f"creating Deck({pullaces=}, {facedown=})")
-            self.cards = [Card(i) for i in range(1, 53)]
+            self.cards = [Card(i, cardsize=cardsize) for i in range(1, 53)]
             self.aces = None
             if pullaces:
                 self.aces = []
