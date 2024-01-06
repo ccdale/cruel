@@ -217,15 +217,18 @@ class Deck(Stack):
                 # all the cards change position by 1
                 acepos.reverse()
                 for i in acepos:
-                    self.aces.append(self.cards.pop(i))
+                    self.aces.append(self.pop(i))
+                # randomise the order of the aces
+                shuffle(self.aces)
                 [card.flip() for card in self.aces if facedown]
             [card.flip() for card in self.cards if facedown]
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
-    def shuffle(self):
+    def shuffle(self, times=1):
         try:
-            shuffle(self.cards)
+            for i in range(times):
+                shuffle(self.cards)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
