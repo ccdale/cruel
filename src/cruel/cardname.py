@@ -43,7 +43,7 @@ class CardName:
         try:
             log.debug(f"creating CardName({cardnumber=})")
             self.cardnumber = cardnumber
-            self.value = self.cardnumber % 13
+            self.value = (self.cardnumber - 1) % 13
             log.debug(f"{self.value=}")
             self.valuename = self.valueNames[self.value]
             log.debug(f"{self.valuename=}")
