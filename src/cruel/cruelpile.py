@@ -28,7 +28,7 @@ from cruel.stack import Stack
 class CruelPile(Stack):
     """CruelPile class is a subclass of Stack for the game Cruel."""
 
-    def __init__(self, pileid, direction=-1, cardslist=None):
+    def __init__(self, pileid, direction=-1, cardslist=None, padding=(1, 1)):
         """Initialise the CruelPile class.
         pileid is an integer to form the key for pysimplegui columns
         direction argument shows which direction the cards are placed on the pile.
@@ -41,9 +41,10 @@ class CruelPile(Stack):
             self.id = pileid
             self.key = f"L {self.id}"
             self.direction = direction
-            self.image = image.blankImage()
+            self.image = blankImage()
             self.doredraw = True
             self.elem = None
+            self.padding = padding
             if cardslist is not None:
                 self.setCards(cardslist)
             if self.doredraw:
@@ -57,7 +58,7 @@ class CruelPile(Stack):
             if len(self.cards) > 0:
                 self.image = self.show().getImage()
             else:
-                self.image = image.blankImage()
+                self.image = blankImage()
             self.doredraw = False
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)

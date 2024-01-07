@@ -43,11 +43,14 @@ class CruelGame:
         try:
             self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
             self.acepiles = [
-                cp.CruelPile(cn + 12, direction=1, cardslist=[ace])
+                cp.CruelPile(
+                    cn + 12, direction=1, cardslist=[ace], padding=self.padding
+                )
                 for cn, ace in enumerate(self.deck.aces)
             ]
             self.cardpiles = [
-                cp.CruelPile(i, cardslist=self.deck.deal(4)) for i in range(12)
+                cp.CruelPile(i, cardslist=self.deck.deal(4), padding=self.padding)
+                for i in range(12)
             ]
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
