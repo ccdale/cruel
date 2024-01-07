@@ -18,7 +18,10 @@
 #
 import sys
 
-from cruel import errorRaise, log, playingcards as pc, cruelpile as cp
+import PySimpleGUI as sg
+
+from cruel import __appname__, __version__, errorRaise, log, cruelpile as cp
+from cruel.deck import Deck
 
 
 class CruelGame:
@@ -38,7 +41,7 @@ class CruelGame:
 
     def setupGame():
         try:
-            self.deck = pc.Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
+            self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
             self.acepiles = [
                 cp.CruelPile(cn + 12, direction=1, cardslist=[ace])
                 for cn, ace in enumerate(self.deck.aces)
@@ -48,3 +51,74 @@ class CruelGame:
             ]
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
+
+    def gameWindow(self):
+        try:
+            foundationelems = [c.getElem() for c in self.acepiles]
+            foundationelems.insert(0, sg.Push())
+            foundationelems.append(sg.Push())
+            layoutelems = [c.getElem() for c in self.cardpiles]
+            layout = []
+            layout.append(foundationelems)
+            layout.append(layoutelems[:6])
+            layout.append(layoutelems[6:])
+            row = [
+                sg.Button("New Game"),
+                sg.Push(),
+                sg.Button("Deal"),
+                sg.Push(),
+                sg.Button("Quit"),
+            ]
+            layout.append(row)
+            self.window = sg.Window(
+                f"{__appname__} {__version__}", layout, finalize=True
+            )
+            self.window.bind("<Control-q>", "CQquit")
+            for id in range(16):
+                self.window[f"L {id}"].bind("<ButtonRelease-1>", "")
+            self.selected = None
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def gameLoop(self):
+        try:
+            while True:
+                event, values = self.window.read()
+                log.debug(f"{event=} {values=}")
+                if event == sg.WIN_CLOSED or event == "CQquit" or event == "Quit":
+                    break
+                elif event == "New Game":
+                    pass
+                elif event == "Re-Deal":
+                    pass
+                elif event.startswith("L "):
+                    if self.selected is None:
+                        id = int(event[2:])
+                        piles = self.cardpiles if id < 12 else self.acepiles
+                        xid = id if id < 12 else id - 12
+                        self.window[event].update(filename=piles[xid].show().inverted)
+                        self.selected = event
+                    else:
+                        id = int(selected[2:])
+                        piles = self.cardpiles if id < 12 else self.acepiles
+                        xid = id if id < 12 else id - 12
+                        self.window[self.selected].update(
+                            filename=piles[xid].show().image
+                        )
+                        self.selected = None
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+
+def main():
+    try:
+        cg = CruelGame()
+        cg.setupGame()
+        cg.gameWindow()
+        cg.gameLoop()
+    except Exception as e:
+        errorRaise(sys.exc_info()[2], e)
+
+
+if __name__ == "__main__":
+    main()
