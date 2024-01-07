@@ -71,7 +71,7 @@ def cardImage(cardnumber, cardsize=(100, 140)):
                 out.save(wanted)
                 invertedim = ImageOps.invert(out.convert("RGB"))
                 invertedim.save(inverted)
-                log.debug(f"Created card image {wanted} and inverted image {inverted}")
+                # log.debug(f"Created card image {wanted} and inverted image {inverted}")
         return wanted
     except Exception as e:
         errorExit(sys.exc_info()[2], e)

@@ -26,7 +26,7 @@ from cruel.card import Card
 class Stack:
     def __init__(self, cards=None):
         try:
-            log.debug(f"creating Stack({cards=})")
+            # log.debug(f"creating Stack({cards=})")
             self.cards = cards if isinstance(cards, list) else []
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
