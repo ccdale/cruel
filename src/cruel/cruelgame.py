@@ -39,22 +39,6 @@ class CruelGame:
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
-    def setupGame(self):
-        try:
-            self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
-            self.acepiles = [
-                cp.CruelPile(
-                    cn + 12, direction=1, cardslist=[ace], padding=self.padding
-                )
-                for cn, ace in enumerate(self.deck.aces)
-            ]
-            self.cardpiles = [
-                cp.CruelPile(i, cardslist=self.deck.deal(4), padding=self.padding)
-                for i in range(12)
-            ]
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
     def gameWindow(self):
         try:
             foundationelems = [c.getElem() for c in self.acepiles]
@@ -83,6 +67,56 @@ class CruelGame:
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
+    def setupGame(self):
+        try:
+            self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
+            self.acepiles = [
+                cp.CruelPile(
+                    cn + 12, direction=1, cardslist=[ace], padding=self.padding
+                )
+                for cn, ace in enumerate(self.deck.aces)
+            ]
+            self.cardpiles = [
+                cp.CruelPile(i, cardslist=self.deck.deal(4), padding=self.padding)
+                for i in range(12)
+            ]
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def newGame(self):
+        try:
+            self.setupGame()
+            for pile in self.cardpiles:
+                pile.doredraw = True
+            for pile in self.acepiles:
+                pile.doredraw = True
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def redraw(self, fullredraw=False):
+        try:
+            for idt in range(16):
+                piles, xidt = self.getIndex(idt)
+                if piles[xidt].selected or fullredraw:
+                    piles[xidt].redraw(self.window)
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def getIndex(self, idt):
+        try:
+            piles = self.cardpiles if idt < 12 else self.acepiles
+            xidt = idt if idt < 12 else idt - 12
+            return (piles, xidt)
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def toggle(self, idt):
+        try:
+            piles, xidt = self.getIndex(idt)
+            piles[xidt].selected = not piles[xidt].selected
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
     def gameLoop(self):
         try:
             while True:
@@ -92,22 +126,26 @@ class CruelGame:
                     break
                 elif event == "New Game":
                     pass
-                elif event == "Re-Deal":
+                elif event == "Deal":
                     pass
                 elif event.startswith("L "):
                     if self.selected is None:
-                        id = int(event[2:])
-                        piles = self.cardpiles if id < 12 else self.acepiles
-                        xid = id if id < 12 else id - 12
-                        self.window[event].update(filename=piles[xid].show().inverted)
+                        idt = int(event[2:])
+                        self.toggle(idt)
+                        self.redraw()
+                        # piles = self.cardpiles if idt < 12 else self.acepiles
+                        # xidt = idt if idt < 12 else idt - 12
+                        # self.window[event].update(filename=piles[xidt].show().inverted)
                         self.selected = event
                     else:
-                        id = int(self.selected[2:])
-                        piles = self.cardpiles if id < 12 else self.acepiles
-                        xid = id if id < 12 else id - 12
-                        self.window[self.selected].update(
-                            filename=piles[xid].show().image
-                        )
+                        idt = int(self.selected[2:])
+                        self.toggle(idt)
+                        self.redraw(fullredraw=True)
+                        # piles = self.cardpiles if idt < 12 else self.acepiles
+                        # xidt = idt if idt < 12 else idt - 12
+                        # self.window[self.selected].update(
+                        #     filename=piles[xidt].show().image
+                        # )
                         self.selected = None
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
@@ -118,6 +156,7 @@ def main():
         cg = CruelGame()
         cg.setupGame()
         cg.gameWindow()
+        cg.redraw(fullredraw=True)
         cg.gameLoop()
     except Exception as e:
         errorRaise(sys.exc_info()[2], e)

@@ -42,23 +42,27 @@ class CruelPile(Stack):
             self.key = f"L {self.id}"
             self.direction = direction
             self.image = blankImage()
-            self.doredraw = True
+            # self.doredraw = True
             self.elem = None
             self.padding = padding
+            self.selected = False
             if cardslist is not None:
                 self.setCards(cardslist)
-            if self.doredraw:
-                self.redraw()
+            # if self.doredraw:
+            #     self.redraw()
             self.createElement()
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
-    def redraw(self):
+    def redraw(self, window):
         try:
-            if len(self.cards) > 0:
-                self.image = self.show().getImage()
+            if len(self) > 0:
+                self.image = (
+                    self.show().image if not self.selected else self.show().inverted
+                )
             else:
                 self.image = blankImage()
+            window[self.key].update(filename=self.image)
             self.doredraw = False
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
