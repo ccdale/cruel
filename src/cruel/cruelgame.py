@@ -102,7 +102,7 @@ class CruelGame:
                         self.window[event].update(filename=piles[xid].show().inverted)
                         self.selected = event
                     else:
-                        id = int(selected[2:])
+                        id = int(self.selected[2:])
                         piles = self.cardpiles if id < 12 else self.acepiles
                         xid = id if id < 12 else id - 12
                         self.window[self.selected].update(
