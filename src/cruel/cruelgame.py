@@ -39,7 +39,7 @@ class CruelGame:
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
-    def setupGame():
+    def setupGame(self):
         try:
             self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
             self.acepiles = [
