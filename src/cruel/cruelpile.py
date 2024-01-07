@@ -18,10 +18,14 @@
 #
 import sys
 
-from cruel import errorRaise, image, log, playingcards as pc
+import PySimpleGUI as sg
+
+from cruel import errorRaise, log
+from cruel.image import blankImage
+from cruel.stack import Stack
 
 
-class CruelPile(pc.Stack):
+class CruelPile(Stack):
     """CruelPile class is a subclass of Stack for the game Cruel."""
 
     def __init__(self, pileid, direction=-1, cardslist=None):
@@ -35,14 +39,16 @@ class CruelPile(pc.Stack):
         try:
             super().__init__()
             self.id = pileid
-            self.key = f"pile{self.id}"
+            self.key = f"L {self.id}"
             self.direction = direction
             self.image = image.blankImage()
             self.doredraw = True
+            self.elem = None
             if cardslist is not None:
                 self.setCards(cardslist)
             if self.doredraw:
                 self.redraw()
+            self.createElement()
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
@@ -60,6 +66,18 @@ class CruelPile(pc.Stack):
         try:
             self.cards = cardslist
             self.doredraw = True
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def createElement(self):
+        try:
+            self.elem = sg.Image(filename=self.image, key=self.key, pad=self.padding)
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def getElem(self):
+        try:
+            return self.elem
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
