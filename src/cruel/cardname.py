@@ -41,17 +41,17 @@ class CardName:
 
     def __init__(self, cardnumber):
         try:
-            log.debug(f"creating CardName({cardnumber=})")
+            # log.debug(f"creating CardName({cardnumber=})")
             self.cardnumber = cardnumber
             self.value = (self.cardnumber - 1) % 13
-            log.debug(f"{self.value=}")
+            # log.debug(f"{self.value=}")
             self.valuename = self.valueNames[self.value]
-            log.debug(f"{self.valuename=}")
+            # log.debug(f"{self.valuename=}")
             self.suitindex = (self.cardnumber - 1) // 13
-            log.debug(f"{self.suitindex=}")
+            # log.debug(f"{self.suitindex=}")
             self.suits = ["Spades", "Hearts", "Diamonds", "Clubs"]
             self.suit = self.suits[self.suitindex]
-            log.debug(f"{self.suit=}")
+            # log.debug(f"{self.suit=}")
             self.hidename = False
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)

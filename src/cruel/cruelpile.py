@@ -71,11 +71,9 @@ class CruelPile(Stack):
 
     def setCards(self, cardslist):
         try:
-            log.debug(
-                f"setCards: {self.id=} {len(cardslist)=} {self.cards=} {cardslist=}"
-            )
+            # log.debug(f"setCards: {self.id=} {len(cardslist)=} {self.cards=} {cardslist=}")
             self.cards = cardslist
-            log.debug(f"setCards: {self.id=} {len(cardslist)=} {self.cards=}")
+            # log.debug(f"setCards: {self.id=} {len(cardslist)=} {self.cards=}")
             self.image = self.show().image
             # self.doredraw = True
         except Exception as e:

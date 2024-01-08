@@ -125,7 +125,8 @@ class CruelGame:
         try:
             piles, xidt = self.getIndex(idt)
             piles[xidt].selected = not piles[xidt].selected
-            return str(piles[xidt].show())
+            self.redraw(xidt)
+            return (piles, xidt)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
@@ -145,6 +146,66 @@ class CruelGame:
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
+    def validMoves(self):
+        try:
+            for pile in self.cardpiles:
+                card = pile.show()
+                for pile2 in self.cardpiles:
+                    if pile2.test(card):
+                        return True
+                for pile2 in self.acepiles:
+                    if pile2.test(card):
+                        return True
+            return False
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def score(self):
+        try:
+            cardsleft = sum([len(pile) for pile in self.cardpiles])
+            pcleft = int((cardsleft / 48) * 100)
+            return (pcleft, cardsleft)
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def updateStatus(self, cardstr):
+        try:
+            pcscore, cardsleft = self.score()
+            valid = "OK" if self.validMoves() else "No valid moves. Press Deal"
+            statusstr = f"{pcscore}% | {cardsleft} cards left | {cardstr} | {valid}"
+            self.window["status"].update(statusstr)
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def cardClicked(self, event):
+        try:
+            if self.selected is None:
+                src = int(event[2:])
+                self.selected = event
+                dest = None
+            else:
+                src = int(self.selected[2:])
+                dest = int(event[2:])
+                self.selected = None
+            spiles, sidt = self.toggle(src)
+            srcstr = str(spiles[sidt].show())
+            deststr = ""
+            validstr = ""
+            if dest is not None:
+                dpiles, didt = self.getIndex(dest)
+                deststr = str(dpiles[didt].show())
+                scard = spiles[sidt].show()
+                valid = dpiles[didt].testAndAdd(scard)
+                junk = None if not valid else spiles[sidt].bottomCard()
+                self.redraw(sidt)
+                validstr = "Valid" if valid else "Invalid"
+                statusstr = f"{srcstr} on {deststr} is {validstr}"
+            else:
+                statusstr = f"{srcstr} selected"
+            self.updateStatus(statusstr)
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
     def gameLoop(self):
         try:
             while True:
@@ -155,20 +216,24 @@ class CruelGame:
                 elif event == "New Game":
                     pass
                 elif event == "Deal":
+                    if self.selected is not None:
+                        self.toggle(int(self.selected[2:]))
+                        self.selected = None
                     self.pickUpAndReDeal()
                 elif event.startswith("L "):
-                    if self.selected is None:
-                        idt = int(event[2:])
-                        cardstr = self.toggle(idt)
-                        self.redraw(idt)
-                        self.selected = event
-                        self.window["status"].update(cardstr)
-                    else:
-                        idt = int(self.selected[2:])
-                        cardstr = self.toggle(idt)
-                        self.redraw(idt)
-                        self.selected = None
-                        self.window["status"].update(cardstr)
+                    self.cardClicked(event)
+                    # if self.selected is None:
+                    #     idt = int(event[2:])
+                    #     cardstr = self.toggle(idt)
+                    #     self.redraw(idt)
+                    #     self.selected = event
+                    #     self.window["status"].update(cardstr)
+                    # else:
+                    #     idt = int(self.selected[2:])
+                    #     cardstr = self.toggle(idt)
+                    #     self.redraw(idt)
+                    #     self.selected = None
+                    #     self.window["status"].update(cardstr)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
