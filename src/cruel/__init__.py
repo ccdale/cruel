@@ -24,8 +24,8 @@ __version__ = "0.2.0"
 __appname__ = "cruel"
 
 ccalogging.setConsoleOut()
-ccalogging.setDebug()
-# ccalogging.setInfo()
+# ccalogging.setDebug()
+ccalogging.setInfo()
 log = ccalogging.log
 
 bgcolour = "#035E1A"
