@@ -141,7 +141,7 @@ class CruelGame:
             for pile in self.cardpiles:
                 n = self.deck.deal(4)
                 log.debug(f"{pile.id=} {n=}")
-                pile.setCards(n, self.window)
+                pile.setCards(n)
                 self.redraw(pile.id)
                 # time.sleep(0.1)
         except Exception as e:
@@ -189,7 +189,11 @@ class CruelGame:
                 dest = int(event[2:])
                 self.selected = None
             spiles, sidt = self.toggle(src)
-            srcstr = str(spiles[sidt].show())
+            if len(spiles[sidt]) == 0:
+                self.selected = None
+                srcstr = ""
+            else:
+                srcstr = str(spiles[sidt].show())
             deststr = ""
             validstr = ""
             if dest is not None:
