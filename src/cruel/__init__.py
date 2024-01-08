@@ -20,7 +20,7 @@ import sys
 
 import ccalogging
 
-__version__ = "0.1.6"
+__version__ = "0.1.8"
 __appname__ = "cruel"
 
 ccalogging.setConsoleOut()
