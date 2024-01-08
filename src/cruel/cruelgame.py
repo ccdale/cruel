@@ -141,7 +141,7 @@ class CruelGame:
             for pile in self.cardpiles:
                 n = self.deck.deal(4)
                 log.debug(f"{pile.id=} {n=}")
-                pile.setCards(n)
+                pile.setCards(n, self.window)
                 self.redraw(pile.id)
                 # time.sleep(0.1)
         except Exception as e:

@@ -69,12 +69,13 @@ class CruelPile(Stack):
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
-    def setCards(self, cardslist):
+    def setCards(self, cardslist, window):
         try:
             # log.debug(f"setCards: {self.id=} {len(cardslist)=} {self.cards=} {cardslist=}")
             self.cards = cardslist
+            self.redraw(window)
             # log.debug(f"setCards: {self.id=} {len(cardslist)=} {self.cards=}")
-            self.image = self.show().image
+            # self.image = self.show().image
             # self.doredraw = True
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
