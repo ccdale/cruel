@@ -96,13 +96,14 @@ class CruelPile(Stack):
         """Test if a card can be added to the pile"""
         try:
             # log.debug(f"test: {len(self)=}")
-            if len(self):
-                expected = self.show().cardnumber + self.direction
-                # log.debug(f"test: {expected=}")
-                # log.debug(f"test: {card.cardnumber=}")
-                if card.cardnumber == expected:
-                    log.debug("test: True")
-                    return True
+            if repr(card).startswith("Card("):
+                if len(self):
+                    expected = self.show().cardnumber + self.direction
+                    # log.debug(f"test: {expected=}")
+                    # log.debug(f"test: {card.cardnumber=}")
+                    if card.cardnumber == expected:
+                        log.debug("test: True")
+                        return True
             # log.debug("test: False")
             return False
         except Exception as e:
