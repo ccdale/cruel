@@ -40,6 +40,7 @@ class CruelPile(Stack):
             super().__init__()
             self.id = pileid
             self.key = f"L {self.id}"
+            self.tkey = f"T {self.id}"
             self.direction = direction
             self.image = blankImage()
             # self.doredraw = True
@@ -56,6 +57,7 @@ class CruelPile(Stack):
 
     def redraw(self, window):
         try:
+            # log.debug(f"pile redraw: {self.id=} {len(self)=} {self.cards=}")
             if len(self) > 0:
                 self.image = (
                     self.show().image if not self.selected else self.show().inverted
@@ -63,14 +65,19 @@ class CruelPile(Stack):
             else:
                 self.image = blankImage()
             window[self.key].update(filename=self.image)
-            self.doredraw = False
+            # self.doredraw = False
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
     def setCards(self, cardslist):
         try:
+            log.debug(
+                f"setCards: {self.id=} {len(cardslist)=} {self.cards=} {cardslist=}"
+            )
             self.cards = cardslist
-            self.doredraw = True
+            log.debug(f"setCards: {self.id=} {len(cardslist)=} {self.cards=}")
+            self.image = self.show().image
+            # self.doredraw = True
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 

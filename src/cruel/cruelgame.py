@@ -17,6 +17,7 @@
 #     along with cruel.  If not, see <http://www.gnu.org/licenses/>.
 #
 import sys
+import time
 
 import PySimpleGUI as sg
 
@@ -36,6 +37,22 @@ class CruelGame:
             self.doredraw = True
             self.selected = None
             self.window = None
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
+    def setupGame(self):
+        try:
+            self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
+            self.acepiles = [
+                cp.CruelPile(
+                    cn + 12, direction=1, cardslist=[ace], padding=self.padding
+                )
+                for cn, ace in enumerate(self.deck.aces)
+            ]
+            self.cardpiles = [
+                cp.CruelPile(i, cardslist=self.deck.deal(4), padding=self.padding)
+                for i in range(12)
+            ]
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
@@ -65,22 +82,6 @@ class CruelGame:
             for id in range(16):
                 self.window[f"L {id}"].bind("<ButtonRelease-1>", "")
             self.selected = None
-        except Exception as e:
-            errorRaise(sys.exc_info()[2], e)
-
-    def setupGame(self):
-        try:
-            self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
-            self.acepiles = [
-                cp.CruelPile(
-                    cn + 12, direction=1, cardslist=[ace], padding=self.padding
-                )
-                for cn, ace in enumerate(self.deck.aces)
-            ]
-            self.cardpiles = [
-                cp.CruelPile(i, cardslist=self.deck.deal(4), padding=self.padding)
-                for i in range(12)
-            ]
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
@@ -128,6 +129,22 @@ class CruelGame:
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
+    def pickUpAndReDeal(self):
+        try:
+            for pile in self.cardpiles:
+                self.deck.undeal(pile.cards)
+                pile.clear()
+                self.redraw(pile.id)
+                # time.sleep(0.1)
+            for pile in self.cardpiles:
+                n = self.deck.deal(4)
+                log.debug(f"{pile.id=} {n=}")
+                pile.setCards(n)
+                self.redraw(pile.id)
+                # time.sleep(0.1)
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
     def gameLoop(self):
         try:
             while True:
@@ -138,7 +155,7 @@ class CruelGame:
                 elif event == "New Game":
                     pass
                 elif event == "Deal":
-                    pass
+                    self.pickUpAndReDeal()
                 elif event.startswith("L "):
                     if self.selected is None:
                         idt = int(event[2:])

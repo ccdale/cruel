@@ -65,6 +65,12 @@ class Deck(Stack):
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
+    def undeal(self, cards):
+        try:
+            self.cards.extend(cards)
+        except Exception as e:
+            errorRaise(sys.exc_info()[2], e)
+
     def dealStack(self, number=1):
         try:
             cards = self.deal(number)
