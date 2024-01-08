@@ -196,7 +196,7 @@ class CruelGame:
                 dpiles, didt = self.getIndex(dest)
                 deststr = str(dpiles[didt].show())
                 scard = spiles[sidt].show()
-                valid = dpiles[didt].testAndAdd(scard)
+                valid = dpiles[didt].testAndAdd(scard, self.window)
                 junk = None if not valid else spiles[sidt].bottomCard()
                 self.redraw(sidt)
                 validstr = "Valid" if valid else "Invalid"

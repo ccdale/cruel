@@ -94,25 +94,25 @@ class CruelPile(Stack):
     def test(self, card):
         """Test if a card can be added to the pile"""
         try:
-            log.debug(f"test: {len(self)=}")
+            # log.debug(f"test: {len(self)=}")
             if len(self):
                 expected = self.show().cardnumber + self.direction
-                log.debug(f"test: {expected=}")
-                log.debug(f"test: {card.cardnumber=}")
+                # log.debug(f"test: {expected=}")
+                # log.debug(f"test: {card.cardnumber=}")
                 if card.cardnumber == expected:
                     log.debug("test: True")
                     return True
-            log.debug("test: False")
+            # log.debug("test: False")
             return False
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
-    def testAndAdd(self, card):
+    def testAndAdd(self, card, window):
         """Test if a card can be added to the pile and add it if it can be"""
         try:
             if self.test(card):
                 self.append(card)
-                self.redraw()
+                self.redraw(window)
                 return True
             return False
         except Exception as e:
