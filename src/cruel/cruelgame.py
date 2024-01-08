@@ -43,6 +43,7 @@ class CruelGame:
     def setupGame(self):
         try:
             self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
+            self.deck.shuffle(1)
             self.acepiles = [
                 cp.CruelPile(
                     cn + 12, direction=1, cardslist=[ace], padding=self.padding
