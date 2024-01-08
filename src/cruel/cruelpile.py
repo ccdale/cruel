@@ -65,6 +65,7 @@ class CruelPile(Stack):
             else:
                 self.image = blankImage()
             window[self.key].update(filename=self.image)
+            window[self.tkey].update(str(len(self)))
             # self.doredraw = False
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
@@ -82,7 +83,10 @@ class CruelPile(Stack):
 
     def createElement(self):
         try:
-            self.elem = sg.Image(filename=self.image, key=self.key, pad=self.padding)
+            row1 = [sg.Image(filename=self.image, key=self.key, pad=self.padding)]
+            row2 = [sg.Text(str(self.len()), key=self.tkey)]
+            elayout = [row1, row2]
+            self.elem = sg.Column(elayout, element_justification="center")
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
 
