@@ -84,7 +84,7 @@ class CruelPile(Stack):
     def createElement(self):
         try:
             row1 = [sg.Image(filename=self.image, key=self.key, pad=self.padding)]
-            row2 = [sg.Text(str(self.len()), key=self.tkey)]
+            row2 = [sg.Text(str(len(self)), key=self.tkey)]
             elayout = [row1, row2]
             self.elem = sg.Column(elayout, element_justification="center")
         except Exception as e:
