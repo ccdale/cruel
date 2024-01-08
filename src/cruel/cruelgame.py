@@ -164,7 +164,7 @@ class CruelGame:
     def score(self):
         try:
             cardsleft = sum([len(pile) for pile in self.cardpiles])
-            pcleft = int((cardsleft / 48) * 100)
+            pcleft = int(((48 - cardsleft) / 48) * 100)
             return (pcleft, cardsleft)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
