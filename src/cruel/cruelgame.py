@@ -219,12 +219,15 @@ class CruelGame:
                 if event == sg.WIN_CLOSED or event == "CQquit" or event == "Quit":
                     break
                 elif event == "New Game":
-                    pass
+                    self.setupGame()
+                    self.fullRedraw()
+                    self.updateStatus("")
                 elif event == "Deal":
                     if self.selected is not None:
                         self.toggle(int(self.selected[2:]))
                         self.selected = None
                     self.pickUpAndReDeal()
+                    self.updateStatus("")
                 elif event.startswith("L "):
                     self.cardClicked(event)
                     # if self.selected is None:
