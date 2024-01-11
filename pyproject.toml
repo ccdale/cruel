@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "cruel", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 ccalogging = "^0.4.4"
 pysimplegui = "^4.60.5"
 pillow = "^10.1.0"
