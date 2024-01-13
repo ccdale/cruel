@@ -262,7 +262,7 @@ class CruelGame:
 
 def main():
     try:
-        cg = CruelGame(cardwidth=150)
+        cg = CruelGame(cardwidth=100)
         cg.setupGame()
         cg.gameWindow()
         cg.redraw()
