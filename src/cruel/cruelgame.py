@@ -172,11 +172,19 @@ class CruelGame:
     def updateStatus(self, cardstr, gameover=False):
         try:
             pcscore, cardsleft = self.score()
+            score = f"{pcscore}% | {cardsleft} cards left"
+            status = ""
+            if len(cardstr) > 0:
+                status = f" | {cardstr}"
             if gameover:
-                statusstr = f"{pcscore}% | {cardsleft} cards left | {cardstr}"
+                statusstr = f"{score} {status}"
             else:
-                valid = "OK" if self.validMoves() else "No valid moves. Press Deal"
-                statusstr = f"{pcscore}% | {cardsleft} cards left | {cardstr} | {valid}"
+                valid = "" if self.validMoves() else "No valid moves."
+                statusstr = (
+                    f"{score} {status} | {valid}"
+                    if len(valid) > 0
+                    else f"{score} {status}"
+                )
             self.window["status"].update(statusstr)
         except Exception as e:
             errorRaise(sys.exc_info()[2], e)
@@ -232,7 +240,8 @@ class CruelGame:
                     self.pickUpAndReDeal()
                     if not self.validMoves():
                         self.updateStatus("No valid moves. Game Over", gameover=True)
-                    self.updateStatus("")
+                    else:
+                        self.updateStatus("")
                 elif event.startswith("L "):
                     self.cardClicked(event)
                     # if self.selected is None:
