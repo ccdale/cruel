@@ -214,8 +214,8 @@ class CruelGame:
                 valid = dpiles[didt].testAndAdd(scard, self.window)
                 junk = None if not valid else spiles[sidt].bottomCard()
                 self.redraw(sidt)
-                validstr = "Valid" if valid else "Invalid"
-                statusstr = f"{srcstr} on {deststr} is {validstr}"
+                validstr = "" if valid else "is Invalid"
+                statusstr = f"{srcstr} on {deststr} {validstr}"
             else:
                 statusstr = f"{srcstr} selected"
             self.updateStatus(statusstr)
