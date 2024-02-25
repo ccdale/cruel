@@ -66,7 +66,7 @@ class CruelPile(Stack):
                     self.show().image if not self.selected else self.show().inverted
                 )
             else:
-                self.image = blankImage()
+                self.image = blankImage(cardsize=self.cardsize)
             window[self.key].update(filename=self.image)
             window[self.tkey].update(str(len(self)))
             # self.doredraw = False
