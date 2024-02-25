@@ -21,8 +21,15 @@ import time
 
 import PySimpleGUI as sg
 
-from cruel import __appname__, __version__, errorRaise, log, cruelpile as cp
-from cruel.deck import Deck
+from cruel import (
+    __appname__,
+    __version__,
+    cruelpile as cp,
+    deck,
+    errorRaise,
+    image,
+    log,
+)
 
 
 class CruelGame:
@@ -42,16 +49,27 @@ class CruelGame:
 
     def setupGame(self):
         try:
-            self.deck = Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
+            self.deck = deck.Deck(pullaces=True, facedown=False, cardsize=self.cardsize)
+            # ensure we generate a blank image of the correct size
+            _ = image.blankImage(cardsize=self.cardsize)
             self.deck.shuffle(1)
             self.acepiles = [
                 cp.CruelPile(
-                    cn + 12, direction=1, cardslist=[ace], padding=self.padding
+                    cn + 12,
+                    direction=1,
+                    cardslist=[ace],
+                    padding=self.padding,
+                    cardsize=self.cardsize,
                 )
                 for cn, ace in enumerate(self.deck.aces)
             ]
             self.cardpiles = [
-                cp.CruelPile(i, cardslist=self.deck.deal(4), padding=self.padding)
+                cp.CruelPile(
+                    i,
+                    cardslist=self.deck.deal(4),
+                    padding=self.padding,
+                    cardsize=self.cardsize,
+                )
                 for i in range(12)
             ]
         except Exception as e:
@@ -262,7 +280,7 @@ class CruelGame:
 
 def main():
     try:
-        cg = CruelGame(cardwidth=100)
+        cg = CruelGame(cardwidth=160)
         cg.setupGame()
         cg.gameWindow()
         cg.redraw()
